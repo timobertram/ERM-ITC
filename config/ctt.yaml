@@ -1,0 +1,41 @@
+# Base config: trains on the 20 real ITC2007 instances comp01-comp20,
+# holds out comp21 for eval. Copy this file per experiment rather than
+# editing it in place.
+data:
+  paths:
+    - "data/ITC2007/real/comp0[1-9]_encoded.npz"   # comp01-comp09
+    - "data/ITC2007/real/comp1[0-9]_encoded.npz"   # comp10-comp19
+    - "data/ITC2007/real/comp20_encoded.npz"
+
+training:
+  project_name: ctt
+  run_name: null           # null -> wandb auto-generates one
+  device: cuda
+  seed: 0
+  batch_size: null         # null -> whole corpus (20 persistent ACT slots here)
+  steps: 200
+  lr: 1.0e-3
+  collision_weight: 1.0
+  log_every: 10
+  eval_every: 10
+  eval_paths: null         # single unnamed eval set
+  eval_sets:
+    comp21: ["data/ITC2007/real/comp21_encoded.npz"]
+  checkpoint_path: null    # e.g. outputs/checkpoints/ctt.pt
+  checkpoint_every: null
+
+model:
+  module: trm_ctt                    # models/recursive_reasoning/trm_ctt.py
+  class_name: TRMCTT
+  loss_head_class_name: TRMCTTLossHead
+  hidden_size: 256
+  expansion: 4.0
+  num_heads: 4
+  head_dim: 64
+  l_layers: 2
+  h_cycles: 2
+  l_cycles: 2
+  halt_max_steps: 16
+  halt_exploration_prob: 0.1
+  halt_max_prob: -1
+  forward_dtype: float32

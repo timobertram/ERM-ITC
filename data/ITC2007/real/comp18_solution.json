@@ -1,0 +1,836 @@
+{
+  "status": "FEASIBLE",
+  "objective": 138.0,
+  "best_bound": 28.0,
+  "solve_time": 45.135483504,
+  "assignment": {
+    "LET-STO-StoMed2#0": {
+      "day": 4,
+      "period_in_day": 0,
+      "period": 24,
+      "room": "rM"
+    },
+    "LET-STO-StoMed2#1": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 19,
+      "room": "rM"
+    },
+    "LET-STO-StoMed2#2": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 16,
+      "room": "rM"
+    },
+    "LET-STO-StoMed1#0": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 26,
+      "room": "r1"
+    },
+    "LET-STO-StoMed1#1": {
+      "day": 3,
+      "period_in_day": 4,
+      "period": 22,
+      "room": "r1"
+    },
+    "LET-STO-StoMed1#2": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 21,
+      "room": "r1"
+    },
+    "LET-ITA-LinIta#0": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 19,
+      "room": "r10"
+    },
+    "LET-ITA-LinIta#1": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "r10"
+    },
+    "LET-ITA-LinIta#2": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 15,
+      "room": "r10"
+    },
+    "LET-ITA-LetIta2#0": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "r10"
+    },
+    "LET-ITA-LetIta2#1": {
+      "day": 4,
+      "period_in_day": 3,
+      "period": 27,
+      "room": "r10"
+    },
+    "LET-ITA-LetIta2#2": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 16,
+      "room": "r10"
+    },
+    "LET-ITA-EleLinGenFil#0": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 9,
+      "room": "r10"
+    },
+    "LET-ITA-EleLinGenFil#1": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 13,
+      "room": "r10"
+    },
+    "LET-ITA-EleLinGenFil#2": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "r10"
+    },
+    "LET-GEO-StoCriCin#0": {
+      "day": 3,
+      "period_in_day": 5,
+      "period": 23,
+      "room": "r1"
+    },
+    "LET-GEO-StoCriCin#1": {
+      "day": 4,
+      "period_in_day": 0,
+      "period": 24,
+      "room": "r1"
+    },
+    "LET-GEO-StoCriCin#2": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 16,
+      "room": "r1"
+    },
+    "LET-GEO-Geo2#0": {
+      "day": 3,
+      "period_in_day": 4,
+      "period": 22,
+      "room": "rN"
+    },
+    "LET-GEO-Geo2#1": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 26,
+      "room": "rN"
+    },
+    "LET-GEO-Geo2#2": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "rN"
+    },
+    "LET-GEO-Geo1#0": {
+      "day": 2,
+      "period_in_day": 0,
+      "period": 12,
+      "room": "r10"
+    },
+    "LET-GEO-Geo1#1": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "r10"
+    },
+    "LET-GEO-Geo1#2": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 25,
+      "room": "r10"
+    },
+    "LET-FIL-StoSci#0": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 20,
+      "room": "rN"
+    },
+    "LET-FIL-StoSci#1": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 25,
+      "room": "rN"
+    },
+    "LET-FIL-StoSci#2": {
+      "day": 2,
+      "period_in_day": 5,
+      "period": 17,
+      "room": "rN"
+    },
+    "LET-FIL-Est#0": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 25,
+      "room": "rM"
+    },
+    "LET-FIL-Est#1": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 15,
+      "room": "rM"
+    },
+    "LET-FIL-Est#2": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 20,
+      "room": "rM"
+    },
+    "LET-CST-StoRom#0": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 26,
+      "room": "r10"
+    },
+    "LET-CST-StoRom#1": {
+      "day": 3,
+      "period_in_day": 4,
+      "period": 22,
+      "room": "r10"
+    },
+    "LET-CST-StoRom#2": {
+      "day": 3,
+      "period_in_day": 5,
+      "period": 23,
+      "room": "r10"
+    },
+    "LET-CST-StoGre#0": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 21,
+      "room": "r10"
+    },
+    "LET-CST-StoGre#1": {
+      "day": 4,
+      "period_in_day": 0,
+      "period": 24,
+      "room": "r10"
+    },
+    "LET-CST-StoGre#2": {
+      "day": 2,
+      "period_in_day": 5,
+      "period": 17,
+      "room": "r10"
+    },
+    "LET-CST-EpiLat#0": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 26,
+      "room": "rC1"
+    },
+    "LET-CST-EpiLat#1": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 19,
+      "room": "rC1"
+    },
+    "LET-CST-EpiLat#2": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 13,
+      "room": "rC1"
+    },
+    "LET-CLE-LinLetGre2#0": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "r1"
+    },
+    "LET-CLE-LinLetGre2#1": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 7,
+      "room": "r1"
+    },
+    "LET-CLE-LinLetGre2#2": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 13,
+      "room": "r1"
+    },
+    "LET-CLE-LinLat#0": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 14,
+      "room": "r1"
+    },
+    "LET-CLE-LinLat#1": {
+      "day": 1,
+      "period_in_day": 4,
+      "period": 10,
+      "room": "r1"
+    },
+    "LET-CLE-LinGre#0": {
+      "day": 5,
+      "period_in_day": 1,
+      "period": 31,
+      "room": "rL"
+    },
+    "LET-CLE-LinGre#1": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 15,
+      "room": "rL"
+    },
+    "LET-CLE-Glo#0": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 20,
+      "room": "rL"
+    },
+    "LET-CLE-Glo#1": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "rL"
+    },
+    "LET-CLE-Glo#2": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 25,
+      "room": "rL"
+    },
+    "LET-CLE-FilCla#0": {
+      "day": 2,
+      "period_in_day": 0,
+      "period": 12,
+      "room": "rC1"
+    },
+    "LET-CLE-FilCla#1": {
+      "day": 1,
+      "period_in_day": 0,
+      "period": 6,
+      "room": "rC1"
+    },
+    "LET-CLE-FilCla#2": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "rC1"
+    },
+    "CBC-LIB-StoLibSta#0": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 14,
+      "room": "rL"
+    },
+    "CBC-LIB-StoLibSta#1": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 21,
+      "room": "rL"
+    },
+    "CBC-LIB-StoLibSta#2": {
+      "day": 3,
+      "period_in_day": 4,
+      "period": 22,
+      "room": "rL"
+    },
+    "CBC-LIB-StoBib#0": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 9,
+      "room": "rN"
+    },
+    "CBC-LIB-StoBib#1": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 13,
+      "room": "rN"
+    },
+    "CBC-LIB-StoBib#2": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 8,
+      "room": "rN"
+    },
+    "CBC-LIB-PalLat#0": {
+      "day": 4,
+      "period_in_day": 4,
+      "period": 28,
+      "room": "r10"
+    },
+    "CBC-LIB-PalLat#1": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 20,
+      "room": "r10"
+    },
+    "CBC-LIB-PalLat#2": {
+      "day": 0,
+      "period_in_day": 0,
+      "period": 0,
+      "room": "r10"
+    },
+    "CBC-LIB-InfDoc#0": {
+      "day": 2,
+      "period_in_day": 0,
+      "period": 12,
+      "room": "rM"
+    },
+    "CBC-LIB-InfDoc#1": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "rM"
+    },
+    "CBC-LIB-InfDoc#2": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "rM"
+    },
+    "CBC-LIB-Cod#0": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 8,
+      "room": "rM"
+    },
+    "CBC-LIB-Cod#1": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 13,
+      "room": "rM"
+    },
+    "CBC-LIB-Cod#2": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 7,
+      "room": "rM"
+    },
+    "CBC-LIB-ArcSpe#0": {
+      "day": 5,
+      "period_in_day": 1,
+      "period": 31,
+      "room": "r1"
+    },
+    "CBC-LIB-ArcSpe#1": {
+      "day": 5,
+      "period_in_day": 0,
+      "period": 30,
+      "room": "r1"
+    },
+    "CBC-LIB-ArcSpe#2": {
+      "day": 2,
+      "period_in_day": 0,
+      "period": 12,
+      "room": "r1"
+    },
+    "CBC-LIB-Arc#0": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 7,
+      "room": "r10"
+    },
+    "CBC-LIB-Arc#1": {
+      "day": 1,
+      "period_in_day": 0,
+      "period": 6,
+      "room": "r10"
+    },
+    "CBC-LIB-Arc#2": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 14,
+      "room": "r10"
+    },
+    "CBC-ART-StoTecFot#0": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 21,
+      "room": "rO"
+    },
+    "CBC-ART-StoTecFot#1": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 16,
+      "room": "rO"
+    },
+    "CBC-ART-StoTecFot#2": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "rO"
+    },
+    "CBC-ART-StoTecArt#0": {
+      "day": 4,
+      "period_in_day": 3,
+      "period": 27,
+      "room": "rVL"
+    },
+    "CBC-ART-StoTecArt#1": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 13,
+      "room": "rVL"
+    },
+    "CBC-ART-StoTecArt#2": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 21,
+      "room": "rVL"
+    },
+    "CBC-ART-StoRes#0": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "rC2"
+    },
+    "CBC-ART-StoRes#1": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 14,
+      "room": "rC2"
+    },
+    "CBC-ART-StoRes#2": {
+      "day": 1,
+      "period_in_day": 4,
+      "period": 10,
+      "room": "rC2"
+    },
+    "CBC-ART-StoProArtCulMatMed#0": {
+      "day": 4,
+      "period_in_day": 3,
+      "period": 27,
+      "room": "rO"
+    },
+    "CBC-ART-StoProArtCulMatMed#1": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 7,
+      "room": "rO"
+    },
+    "CBC-ART-StoProArtCulMatMed#2": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 14,
+      "room": "rO"
+    },
+    "CBC-ART-StoMus#0": {
+      "day": 4,
+      "period_in_day": 0,
+      "period": 24,
+      "room": "rN"
+    },
+    "CBC-ART-StoMus#1": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 16,
+      "room": "rN"
+    },
+    "CBC-ART-StoMus#2": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 21,
+      "room": "rN"
+    },
+    "CBC-ART-StoDisGra#0": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 9,
+      "room": "r1"
+    },
+    "CBC-ART-StoDisGra#1": {
+      "day": 4,
+      "period_in_day": 3,
+      "period": 27,
+      "room": "r1"
+    },
+    "CBC-ART-StoDisGra#2": {
+      "day": 3,
+      "period_in_day": 0,
+      "period": 18,
+      "room": "r1"
+    },
+    "CBC-ART-StoCriCin#0": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 21,
+      "room": "rC1"
+    },
+    "CBC-ART-StoCriCin#1": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 16,
+      "room": "rC1"
+    },
+    "CBC-ART-StoCriCin#2": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "rC1"
+    },
+    "CBC-ART-StoCriArt#0": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 15,
+      "room": "rC2"
+    },
+    "CBC-ART-StoCriArt#1": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 19,
+      "room": "rC2"
+    },
+    "CBC-ART-StoCriArt#2": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 26,
+      "room": "rC2"
+    },
+    "CBC-ART-StoArcMed#0": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 16,
+      "room": "rL"
+    },
+    "CBC-ART-StoArcMed#1": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "rL"
+    },
+    "CBC-ART-StoArcMed#2": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 9,
+      "room": "rL"
+    },
+    "CBC-ART-StoArcCon#0": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "rM"
+    },
+    "CBC-ART-StoArcCon#1": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 26,
+      "room": "rM"
+    },
+    "CBC-ART-StoArcCon#2": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 9,
+      "room": "rM"
+    },
+    "CBC-ART-SocArt#0": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 25,
+      "room": "rO"
+    },
+    "CBC-ART-SocArt#1": {
+      "day": 3,
+      "period_in_day": 4,
+      "period": 22,
+      "room": "rO"
+    },
+    "CBC-ART-SocArt#2": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 15,
+      "room": "rO"
+    },
+    "CBC-ART-MatCarCosResEdiSto#0": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "rM"
+    },
+    "CBC-ART-MatCarCosResEdiSto#1": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 14,
+      "room": "rM"
+    },
+    "CBC-ART-MatCarCosResEdiSto#2": {
+      "day": 1,
+      "period_in_day": 4,
+      "period": 10,
+      "room": "rM"
+    },
+    "CBC-ART-EleInfSciCatBenCul#0": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 25,
+      "room": "rC2"
+    },
+    "CBC-ART-EleInfSciCatBenCul#1": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 8,
+      "room": "rC2"
+    },
+    "CBC-ART-EleInfSciCatBenCul#2": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "rC2"
+    },
+    "CBC-ART-ArcStoArtMusA#0": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 9,
+      "room": "rC2"
+    },
+    "CBC-ART-ArcStoArtMusA#1": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 16,
+      "room": "rC2"
+    },
+    "CBC-ART-ArcStoArtMusA#2": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 20,
+      "room": "rC2"
+    },
+    "CBC-ARC-TopRilMonAnt#0": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 14,
+      "room": "rN"
+    },
+    "CBC-ARC-TopRilMonAnt#1": {
+      "day": 4,
+      "period_in_day": 3,
+      "period": 27,
+      "room": "rN"
+    },
+    "CBC-ARC-TopRilMonAnt#2": {
+      "day": 3,
+      "period_in_day": 0,
+      "period": 18,
+      "room": "rN"
+    },
+    "CBC-ARC-Palantro#0": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 16,
+      "room": "rVL"
+    },
+    "CBC-ARC-Palantro#1": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 9,
+      "room": "rVL"
+    },
+    "CBC-ARC-Palantro#2": {
+      "day": 3,
+      "period_in_day": 4,
+      "period": 22,
+      "room": "rVL"
+    },
+    "CBC-ARC-MatTecAppArc#0": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "rL"
+    },
+    "CBC-ARC-MatTecAppArc#1": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 13,
+      "room": "rL"
+    },
+    "CBC-ARC-MatTecAppArc#2": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 7,
+      "room": "rL"
+    },
+    "CBC-ARC-LinLat#0": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "r1"
+    },
+    "CBC-ARC-LinLat#1": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 15,
+      "room": "r1"
+    },
+    "CBC-ARC-Geo1#0": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "r1"
+    },
+    "CBC-ARC-Geo1#1": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 25,
+      "room": "r1"
+    },
+    "CBC-ARC-Geo1#2": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 8,
+      "room": "r1"
+    },
+    "CBC-ARC-EtrAntIta#0": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 14,
+      "room": "rVL"
+    },
+    "CBC-ARC-EtrAntIta#1": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 8,
+      "room": "rVL"
+    },
+    "CBC-ARC-EtrAntIta#2": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "rVL"
+    },
+    "CBC-ARC-ArcCriMed#0": {
+      "day": 4,
+      "period_in_day": 0,
+      "period": 24,
+      "room": "rO"
+    },
+    "CBC-ARC-ArcCriMed#1": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 19,
+      "room": "rO"
+    },
+    "CBC-ARC-ArcCriMed#2": {
+      "day": 5,
+      "period_in_day": 0,
+      "period": 30,
+      "room": "rO"
+    },
+    "CBC-ARC-ArcCla2#0": {
+      "day": 4,
+      "period_in_day": 4,
+      "period": 28,
+      "room": "rVL"
+    },
+    "CBC-ARC-ArcCla2#1": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 19,
+      "room": "rVL"
+    },
+    "CBC-ARC-ArcCla2#2": {
+      "day": 5,
+      "period_in_day": 0,
+      "period": 30,
+      "room": "rVL"
+    }
+  }
+}

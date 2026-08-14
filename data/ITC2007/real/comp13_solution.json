@@ -1,0 +1,1856 @@
+{
+  "status": "FEASIBLE",
+  "objective": 131.0,
+  "best_bound": 49.0,
+  "solve_time": 45.239919196,
+  "assignment": {
+    "c0012#0": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 18,
+      "room": "37"
+    },
+    "c0012#1": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "37"
+    },
+    "c0012#2": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 22,
+      "room": "37"
+    },
+    "c0013#0": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 11,
+      "room": "R"
+    },
+    "c0013#1": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 6,
+      "room": "R"
+    },
+    "c0013#2": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 21,
+      "room": "R"
+    },
+    "c0014#0": {
+      "day": 1,
+      "period_in_day": 0,
+      "period": 5,
+      "room": "37"
+    },
+    "c0014#1": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "37"
+    },
+    "c0014#2": {
+      "day": 2,
+      "period_in_day": 0,
+      "period": 10,
+      "room": "37"
+    },
+    "c0035#0": {
+      "day": 3,
+      "period_in_day": 0,
+      "period": 15,
+      "room": "31"
+    },
+    "c0035#1": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 7,
+      "room": "31"
+    },
+    "c0035#2": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 11,
+      "room": "31"
+    },
+    "c0036#0": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 8,
+      "room": "25"
+    },
+    "c0036#1": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 16,
+      "room": "25"
+    },
+    "c0036#2": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 12,
+      "room": "25"
+    },
+    "c0045#0": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 11,
+      "room": "F"
+    },
+    "c0045#1": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 8,
+      "room": "F"
+    },
+    "c0045#2": {
+      "day": 3,
+      "period_in_day": 4,
+      "period": 19,
+      "room": "F"
+    },
+    "c0052#0": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 11,
+      "room": "A"
+    },
+    "c0052#1": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "A"
+    },
+    "c0052#2": {
+      "day": 4,
+      "period_in_day": 3,
+      "period": 23,
+      "room": "A"
+    },
+    "c0053#0": {
+      "day": 1,
+      "period_in_day": 4,
+      "period": 9,
+      "room": "D"
+    },
+    "c0053#1": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 16,
+      "room": "D"
+    },
+    "c0053#2": {
+      "day": 2,
+      "period_in_day": 0,
+      "period": 10,
+      "room": "F"
+    },
+    "c0055#0": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 7,
+      "room": "F"
+    },
+    "c0055#1": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 17,
+      "room": "F"
+    },
+    "c0055#2": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 22,
+      "room": "F"
+    },
+    "c0057#0": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 18,
+      "room": "B"
+    },
+    "c0057#1": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 12,
+      "room": "B"
+    },
+    "c0057#2": {
+      "day": 1,
+      "period_in_day": 4,
+      "period": 9,
+      "room": "B"
+    },
+    "c0060#0": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 8,
+      "room": "A"
+    },
+    "c0060#1": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 12,
+      "room": "A"
+    },
+    "c0060#2": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "A"
+    },
+    "c0094#0": {
+      "day": 4,
+      "period_in_day": 0,
+      "period": 20,
+      "room": "D"
+    },
+    "c0094#1": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 11,
+      "room": "D"
+    },
+    "c0094#2": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 17,
+      "room": "D"
+    },
+    "c0098#0": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 12,
+      "room": "L"
+    },
+    "c0098#1": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 22,
+      "room": "L"
+    },
+    "c0098#2": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 16,
+      "room": "L"
+    },
+    "c0104#0": {
+      "day": 4,
+      "period_in_day": 3,
+      "period": 23,
+      "room": "B"
+    },
+    "c0104#1": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "B"
+    },
+    "c0104#2": {
+      "day": 3,
+      "period_in_day": 0,
+      "period": 15,
+      "room": "B"
+    },
+    "c0107#0": {
+      "day": 1,
+      "period_in_day": 4,
+      "period": 9,
+      "room": "DS1"
+    },
+    "c0107#1": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 18,
+      "room": "DS1"
+    },
+    "c0107#2": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 21,
+      "room": "DS1"
+    },
+    "c0112#0": {
+      "day": 2,
+      "period_in_day": 0,
+      "period": 10,
+      "room": "D"
+    },
+    "c0112#1": {
+      "day": 0,
+      "period_in_day": 0,
+      "period": 0,
+      "room": "D"
+    },
+    "c0112#2": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 8,
+      "room": "D"
+    },
+    "c0114#0": {
+      "day": 4,
+      "period_in_day": 4,
+      "period": 24,
+      "room": "DS1"
+    },
+    "c0114#1": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 11,
+      "room": "DS1"
+    },
+    "c0114#2": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "DS1"
+    },
+    "c0116#0": {
+      "day": 3,
+      "period_in_day": 4,
+      "period": 19,
+      "room": "D"
+    },
+    "c0116#1": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 14,
+      "room": "D"
+    },
+    "c0116#2": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 21,
+      "room": "D"
+    },
+    "c0117#0": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 18,
+      "room": "G"
+    },
+    "c0117#1": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 13,
+      "room": "G"
+    },
+    "c0117#2": {
+      "day": 4,
+      "period_in_day": 0,
+      "period": 20,
+      "room": "G"
+    },
+    "c0130#0": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 7,
+      "room": "A"
+    },
+    "c0130#1": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 6,
+      "room": "F"
+    },
+    "c0130#2": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 18,
+      "room": "F"
+    },
+    "c0148#0": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 13,
+      "room": "F"
+    },
+    "c0148#1": {
+      "day": 4,
+      "period_in_day": 4,
+      "period": 24,
+      "room": "F"
+    },
+    "c0148#2": {
+      "day": 0,
+      "period_in_day": 0,
+      "period": 0,
+      "room": "F"
+    },
+    "c0149#0": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 16,
+      "room": "DS1"
+    },
+    "c0149#1": {
+      "day": 4,
+      "period_in_day": 3,
+      "period": 23,
+      "room": "DS1"
+    },
+    "c0149#2": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 12,
+      "room": "DS1"
+    },
+    "c0150#0": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 6,
+      "room": "A"
+    },
+    "c0150#1": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "A"
+    },
+    "c0150#2": {
+      "day": 1,
+      "period_in_day": 0,
+      "period": 5,
+      "room": "A"
+    },
+    "c0162#0": {
+      "day": 3,
+      "period_in_day": 0,
+      "period": 15,
+      "room": "F"
+    },
+    "c0162#1": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 14,
+      "room": "F"
+    },
+    "c0162#2": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "F"
+    },
+    "c0163#0": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 7,
+      "room": "B"
+    },
+    "c0163#1": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 13,
+      "room": "B"
+    },
+    "c0163#2": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 6,
+      "room": "B"
+    },
+    "c0177#0": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 13,
+      "room": "A"
+    },
+    "c0177#1": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 21,
+      "room": "A"
+    },
+    "c0177#2": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 16,
+      "room": "A"
+    },
+    "c0179#0": {
+      "day": 4,
+      "period_in_day": 0,
+      "period": 20,
+      "room": "A"
+    },
+    "c0179#1": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 17,
+      "room": "A"
+    },
+    "c0179#2": {
+      "day": 1,
+      "period_in_day": 4,
+      "period": 9,
+      "room": "A"
+    },
+    "c0181#0": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 8,
+      "room": "L"
+    },
+    "c0181#1": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 14,
+      "room": "L"
+    },
+    "c0181#2": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 18,
+      "room": "L"
+    },
+    "c0198#0": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 21,
+      "room": "L"
+    },
+    "c0198#1": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "L"
+    },
+    "c0198#2": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 11,
+      "room": "L"
+    },
+    "c0210#0": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "G"
+    },
+    "c0210#1": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 12,
+      "room": "G"
+    },
+    "c0210#2": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 18,
+      "room": "A"
+    },
+    "c0214#0": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 11,
+      "room": "B"
+    },
+    "c0214#1": {
+      "day": 3,
+      "period_in_day": 4,
+      "period": 19,
+      "room": "B"
+    },
+    "c0214#2": {
+      "day": 1,
+      "period_in_day": 0,
+      "period": 5,
+      "room": "B"
+    },
+    "c0218#0": {
+      "day": 4,
+      "period_in_day": 4,
+      "period": 24,
+      "room": "L"
+    },
+    "c0218#1": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "L"
+    },
+    "c0218#2": {
+      "day": 3,
+      "period_in_day": 0,
+      "period": 15,
+      "room": "L"
+    },
+    "c0223#0": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "L"
+    },
+    "c0223#1": {
+      "day": 4,
+      "period_in_day": 3,
+      "period": 23,
+      "room": "L"
+    },
+    "c0223#2": {
+      "day": 3,
+      "period_in_day": 4,
+      "period": 19,
+      "room": "L"
+    },
+    "c0224#0": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 17,
+      "room": "B"
+    },
+    "c0224#1": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 16,
+      "room": "B"
+    },
+    "c0224#2": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "B"
+    },
+    "c0226#0": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 6,
+      "room": "L"
+    },
+    "c0226#1": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "DS1"
+    },
+    "c0226#2": {
+      "day": 2,
+      "period_in_day": 0,
+      "period": 10,
+      "room": "DS1"
+    },
+    "c0227#0": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 8,
+      "room": "G"
+    },
+    "c0227#1": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 16,
+      "room": "G"
+    },
+    "c0227#2": {
+      "day": 3,
+      "period_in_day": 0,
+      "period": 15,
+      "room": "G"
+    },
+    "c0233#0": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "DS1"
+    },
+    "c0233#1": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "A"
+    },
+    "c0233#2": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 22,
+      "room": "DS1"
+    },
+    "c0249#0": {
+      "day": 1,
+      "period_in_day": 4,
+      "period": 9,
+      "room": "50"
+    },
+    "c0249#1": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 17,
+      "room": "50"
+    },
+    "c0249#2": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "50"
+    },
+    "c0254#0": {
+      "day": 2,
+      "period_in_day": 0,
+      "period": 10,
+      "room": "G"
+    },
+    "c0254#1": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "G"
+    },
+    "c0254#2": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 7,
+      "room": "G"
+    },
+    "c0271#0": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 22,
+      "room": "G"
+    },
+    "c0271#1": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "G"
+    },
+    "c0271#2": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 6,
+      "room": "G"
+    },
+    "c0409#0": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 21,
+      "room": "DS2"
+    },
+    "c0409#1": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 6,
+      "room": "DS2"
+    },
+    "c0409#2": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 13,
+      "room": "DS2"
+    },
+    "c0416#0": {
+      "day": 4,
+      "period_in_day": 3,
+      "period": 23,
+      "room": "R"
+    },
+    "c0416#1": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 8,
+      "room": "R"
+    },
+    "c0416#2": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "R"
+    },
+    "c0420#0": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 12,
+      "room": "DS2"
+    },
+    "c0420#1": {
+      "day": 4,
+      "period_in_day": 4,
+      "period": 24,
+      "room": "DS2"
+    },
+    "c0420#2": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 18,
+      "room": "DS2"
+    },
+    "c0441#0": {
+      "day": 4,
+      "period_in_day": 0,
+      "period": 20,
+      "room": "27"
+    },
+    "c0441#1": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 14,
+      "room": "27"
+    },
+    "c0441#2": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 13,
+      "room": "27"
+    },
+    "c0441#3": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 6,
+      "room": "27"
+    },
+    "c0441#4": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "27"
+    },
+    "c0456#0": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 16,
+      "room": "51"
+    },
+    "c0456#1": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 17,
+      "room": "51"
+    },
+    "c0456#2": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 12,
+      "room": "51"
+    },
+    "c0457#0": {
+      "day": 0,
+      "period_in_day": 0,
+      "period": 0,
+      "room": "51"
+    },
+    "c0457#1": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "51"
+    },
+    "c0457#2": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 7,
+      "room": "51"
+    },
+    "c0465#0": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 14,
+      "room": "A"
+    },
+    "c0465#1": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 22,
+      "room": "A"
+    },
+    "c0465#2": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 13,
+      "room": "L"
+    },
+    "c0486#0": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 6,
+      "room": "D"
+    },
+    "c0486#1": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 12,
+      "room": "D"
+    },
+    "c0486#2": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 13,
+      "room": "D"
+    },
+    "c0491#0": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 21,
+      "room": "51"
+    },
+    "c0491#1": {
+      "day": 4,
+      "period_in_day": 0,
+      "period": 20,
+      "room": "51"
+    },
+    "c0491#2": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 6,
+      "room": "51"
+    },
+    "c0498#0": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 21,
+      "room": "52"
+    },
+    "c0498#1": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "52"
+    },
+    "c0498#2": {
+      "day": 0,
+      "period_in_day": 0,
+      "period": 0,
+      "room": "52"
+    },
+    "c0501#0": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 6,
+      "room": "36"
+    },
+    "c0501#1": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 21,
+      "room": "36"
+    },
+    "c0501#2": {
+      "day": 4,
+      "period_in_day": 0,
+      "period": 20,
+      "room": "36"
+    },
+    "c0506#0": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 14,
+      "room": "37"
+    },
+    "c0506#1": {
+      "day": 3,
+      "period_in_day": 0,
+      "period": 15,
+      "room": "37"
+    },
+    "c0506#2": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 16,
+      "room": "37"
+    },
+    "c0510#0": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "F"
+    },
+    "c0510#1": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 16,
+      "room": "F"
+    },
+    "c0510#2": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 22,
+      "room": "D"
+    },
+    "c0510#3": {
+      "day": 4,
+      "period_in_day": 4,
+      "period": 24,
+      "room": "D"
+    },
+    "c0510#4": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 12,
+      "room": "F"
+    },
+    "c0510#5": {
+      "day": 3,
+      "period_in_day": 0,
+      "period": 15,
+      "room": "D"
+    },
+    "c0527#0": {
+      "day": 2,
+      "period_in_day": 0,
+      "period": 10,
+      "room": "25"
+    },
+    "c0527#1": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 6,
+      "room": "25"
+    },
+    "c0527#2": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 7,
+      "room": "25"
+    },
+    "c0670#0": {
+      "day": 4,
+      "period_in_day": 0,
+      "period": 20,
+      "room": "38"
+    },
+    "c0670#1": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 14,
+      "room": "38"
+    },
+    "c0670#2": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 7,
+      "room": "38"
+    },
+    "c0738#0": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 18,
+      "room": "R"
+    },
+    "c0738#1": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 17,
+      "room": "R"
+    },
+    "c0738#2": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 14,
+      "room": "R"
+    },
+    "c0745#0": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "F"
+    },
+    "c0745#1": {
+      "day": 1,
+      "period_in_day": 0,
+      "period": 5,
+      "room": "F"
+    },
+    "c0745#2": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "F"
+    },
+    "c0773#0": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 8,
+      "room": "DS1"
+    },
+    "c0773#1": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "DS1"
+    },
+    "c0773#2": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 7,
+      "room": "DS1"
+    },
+    "c0814#0": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 18,
+      "room": "38"
+    },
+    "c0814#1": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 11,
+      "room": "38"
+    },
+    "c0814#2": {
+      "day": 0,
+      "period_in_day": 0,
+      "period": 0,
+      "room": "38"
+    },
+    "c0814#3": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 21,
+      "room": "38"
+    },
+    "c0814#4": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 17,
+      "room": "38"
+    },
+    "c0825#0": {
+      "day": 1,
+      "period_in_day": 0,
+      "period": 5,
+      "room": "31"
+    },
+    "c0825#1": {
+      "day": 2,
+      "period_in_day": 0,
+      "period": 10,
+      "room": "31"
+    },
+    "c0825#2": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "31"
+    },
+    "c0828#0": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "25"
+    },
+    "c0828#1": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 11,
+      "room": "25"
+    },
+    "c0828#2": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 21,
+      "room": "25"
+    },
+    "c0845#0": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 22,
+      "room": "38"
+    },
+    "c0845#1": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "38"
+    },
+    "c0845#2": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 6,
+      "room": "38"
+    },
+    "c0850#0": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 13,
+      "room": "38"
+    },
+    "c0850#1": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 16,
+      "room": "38"
+    },
+    "c0850#2": {
+      "day": 4,
+      "period_in_day": 3,
+      "period": 23,
+      "room": "38"
+    },
+    "c0856#0": {
+      "day": 4,
+      "period_in_day": 4,
+      "period": 24,
+      "room": "38"
+    },
+    "c0856#1": {
+      "day": 1,
+      "period_in_day": 0,
+      "period": 5,
+      "room": "38"
+    },
+    "c0856#2": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "38"
+    },
+    "c0856#3": {
+      "day": 1,
+      "period_in_day": 4,
+      "period": 9,
+      "room": "38"
+    },
+    "c0856#4": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 8,
+      "room": "38"
+    },
+    "c0856#5": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "38"
+    },
+    "c0856#6": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 12,
+      "room": "38"
+    },
+    "c0866#0": {
+      "day": 4,
+      "period_in_day": 4,
+      "period": 24,
+      "room": "37"
+    },
+    "c0866#1": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "37"
+    },
+    "c0866#2": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 12,
+      "room": "37"
+    },
+    "c0866#3": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 14,
+      "room": "50"
+    },
+    "c0866#4": {
+      "day": 3,
+      "period_in_day": 4,
+      "period": 19,
+      "room": "37"
+    },
+    "c0866#5": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 18,
+      "room": "50"
+    },
+    "c0866#6": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 7,
+      "room": "50"
+    },
+    "c0869#0": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 7,
+      "room": "N"
+    },
+    "c0869#1": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 14,
+      "room": "N"
+    },
+    "c0869#2": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "N"
+    },
+    "c0869#3": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 8,
+      "room": "N"
+    },
+    "c0869#4": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "N"
+    },
+    "c0869#5": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 12,
+      "room": "N"
+    },
+    "c0869#6": {
+      "day": 1,
+      "period_in_day": 4,
+      "period": 9,
+      "room": "N"
+    },
+    "c0882#0": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 7,
+      "room": "36"
+    },
+    "c0882#1": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 17,
+      "room": "36"
+    },
+    "c0882#2": {
+      "day": 2,
+      "period_in_day": 0,
+      "period": 10,
+      "room": "36"
+    },
+    "c0882#3": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "36"
+    },
+    "c0882#4": {
+      "day": 3,
+      "period_in_day": 4,
+      "period": 19,
+      "room": "36"
+    },
+    "c0882#5": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 11,
+      "room": "36"
+    },
+    "c0882#6": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 18,
+      "room": "36"
+    },
+    "c0884#0": {
+      "day": 2,
+      "period_in_day": 0,
+      "period": 10,
+      "room": "51"
+    },
+    "c0884#1": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "51"
+    },
+    "c0884#2": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "51"
+    },
+    "c0884#3": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 8,
+      "room": "51"
+    },
+    "c0884#4": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 11,
+      "room": "51"
+    },
+    "c0884#5": {
+      "day": 1,
+      "period_in_day": 4,
+      "period": 9,
+      "room": "51"
+    },
+    "c0884#6": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "51"
+    },
+    "c0899#0": {
+      "day": 2,
+      "period_in_day": 0,
+      "period": 10,
+      "room": "52"
+    },
+    "c0899#1": {
+      "day": 3,
+      "period_in_day": 0,
+      "period": 15,
+      "room": "52"
+    },
+    "c0899#2": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 11,
+      "room": "52"
+    },
+    "c0901#0": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 14,
+      "room": "G"
+    },
+    "c0901#1": {
+      "day": 1,
+      "period_in_day": 0,
+      "period": 5,
+      "room": "G"
+    },
+    "c0901#2": {
+      "day": 3,
+      "period_in_day": 4,
+      "period": 19,
+      "room": "G"
+    },
+    "c0933#0": {
+      "day": 4,
+      "period_in_day": 3,
+      "period": 23,
+      "room": "37"
+    },
+    "c0933#1": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 11,
+      "room": "37"
+    },
+    "c0933#2": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 7,
+      "room": "37"
+    },
+    "c0947#0": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 12,
+      "room": "36"
+    },
+    "c0947#1": {
+      "day": 4,
+      "period_in_day": 4,
+      "period": 24,
+      "room": "36"
+    },
+    "c0947#2": {
+      "day": 1,
+      "period_in_day": 0,
+      "period": 5,
+      "room": "36"
+    },
+    "c0947#3": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 8,
+      "room": "36"
+    },
+    "c0947#4": {
+      "day": 0,
+      "period_in_day": 0,
+      "period": 0,
+      "room": "36"
+    },
+    "c0947#5": {
+      "day": 4,
+      "period_in_day": 3,
+      "period": 23,
+      "room": "36"
+    },
+    "c0947#6": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 16,
+      "room": "36"
+    },
+    "c0953#0": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "31"
+    },
+    "c0953#1": {
+      "day": 4,
+      "period_in_day": 3,
+      "period": 23,
+      "room": "31"
+    },
+    "c0953#2": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "31"
+    },
+    "c0953#3": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 22,
+      "room": "31"
+    },
+    "c0953#4": {
+      "day": 0,
+      "period_in_day": 0,
+      "period": 0,
+      "room": "31"
+    },
+    "c0953#5": {
+      "day": 4,
+      "period_in_day": 4,
+      "period": 24,
+      "room": "31"
+    },
+    "c0953#6": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 13,
+      "room": "31"
+    },
+    "c0969#0": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 17,
+      "room": "31"
+    },
+    "c0969#1": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 14,
+      "room": "31"
+    },
+    "c0969#2": {
+      "day": 4,
+      "period_in_day": 0,
+      "period": 20,
+      "room": "31"
+    },
+    "c0969#3": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 8,
+      "room": "31"
+    },
+    "c0969#4": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 18,
+      "room": "31"
+    },
+    "c0969#5": {
+      "day": 1,
+      "period_in_day": 4,
+      "period": 9,
+      "room": "31"
+    },
+    "c0969#6": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 21,
+      "room": "31"
+    },
+    "c0972#0": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 13,
+      "room": "50"
+    },
+    "c0972#1": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 8,
+      "room": "50"
+    },
+    "c0972#2": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 21,
+      "room": "50"
+    },
+    "c0972#3": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 12,
+      "room": "50"
+    },
+    "c0972#4": {
+      "day": 0,
+      "period_in_day": 0,
+      "period": 0,
+      "room": "50"
+    },
+    "c0972#5": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 22,
+      "room": "50"
+    },
+    "c0972#6": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "50"
+    },
+    "c0978#0": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "52"
+    },
+    "c0978#1": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "52"
+    },
+    "c0978#2": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 13,
+      "room": "52"
+    },
+    "c0978#3": {
+      "day": 4,
+      "period_in_day": 3,
+      "period": 23,
+      "room": "52"
+    },
+    "c0978#4": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 17,
+      "room": "52"
+    },
+    "c0978#5": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 22,
+      "room": "52"
+    },
+    "c0978#6": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 16,
+      "room": "52"
+    },
+    "c0985#0": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 11,
+      "room": "27"
+    },
+    "c0985#1": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 16,
+      "room": "27"
+    },
+    "c0985#2": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 22,
+      "room": "27"
+    },
+    "c0985#3": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 17,
+      "room": "27"
+    },
+    "c0985#4": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 12,
+      "room": "27"
+    },
+    "c0985#5": {
+      "day": 4,
+      "period_in_day": 3,
+      "period": 23,
+      "room": "27"
+    },
+    "c0985#6": {
+      "day": 0,
+      "period_in_day": 0,
+      "period": 0,
+      "room": "27"
+    },
+    "c1007#0": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 7,
+      "room": "L"
+    },
+    "c1007#1": {
+      "day": 2,
+      "period_in_day": 0,
+      "period": 10,
+      "room": "L"
+    },
+    "c1007#2": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 17,
+      "room": "L"
+    },
+    "c1044#0": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 11,
+      "room": "DS2"
+    },
+    "c1044#1": {
+      "day": 0,
+      "period_in_day": 0,
+      "period": 0,
+      "room": "DS2"
+    },
+    "c1044#2": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 16,
+      "room": "DS2"
+    },
+    "c1044#3": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "DS2"
+    },
+    "c1044#4": {
+      "day": 1,
+      "period_in_day": 0,
+      "period": 5,
+      "room": "DS2"
+    },
+    "c1044#5": {
+      "day": 2,
+      "period_in_day": 0,
+      "period": 10,
+      "room": "DS2"
+    },
+    "c1044#6": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "DS2"
+    },
+    "c0798#0": {
+      "day": 1,
+      "period_in_day": 4,
+      "period": 9,
+      "room": "25"
+    },
+    "c0798#1": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 13,
+      "room": "25"
+    },
+    "c0798#2": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "25"
+    },
+    "c0798#3": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 17,
+      "room": "25"
+    },
+    "c0798#4": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "25"
+    },
+    "c0741#0": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 21,
+      "room": "G"
+    },
+    "c0741#1": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 8,
+      "room": "B"
+    },
+    "c0741#2": {
+      "day": 2,
+      "period_in_day": 0,
+      "period": 10,
+      "room": "B"
+    },
+    "c0741#3": {
+      "day": 1,
+      "period_in_day": 4,
+      "period": 9,
+      "room": "G"
+    },
+    "c0741#4": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 11,
+      "room": "G"
+    },
+    "c0741#5": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 22,
+      "room": "B"
+    },
+    "c0196#0": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 14,
+      "room": "DS1"
+    },
+    "c0196#1": {
+      "day": 1,
+      "period_in_day": 0,
+      "period": 5,
+      "room": "DS1"
+    },
+    "c0196#2": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 13,
+      "room": "DS1"
+    },
+    "c0196#3": {
+      "day": 3,
+      "period_in_day": 0,
+      "period": 15,
+      "room": "DS1"
+    },
+    "c0196#4": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 6,
+      "room": "DS1"
+    }
+  }
+}

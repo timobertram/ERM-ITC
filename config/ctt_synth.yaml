@@ -1,0 +1,38 @@
+# Trains on synthetic instances (dataset/ctt_generator.py output, encoded
+# into data/ITC2007/synth/), holds out ALL 21 real instances for eval.
+data:
+  paths:
+    - "data/ITC2007/synth/*_encoded.npz"
+
+training:
+  project_name: ctt
+  run_name: null           # null -> wandb auto-generates one
+  device: cuda
+  seed: 0
+  batch_size: 64           # fixed slot count, unlike the real-data base config's whole-corpus default
+  steps: 10000
+  lr: 3.0e-4
+  collision_weight: 1.0
+  log_every: 10
+  eval_every: 10
+  eval_paths: null         # single unnamed eval set
+  eval_sets:
+    real: ["data/ITC2007/real/comp*_encoded.npz"]
+  checkpoint_path: null    # e.g. outputs/checkpoints/ctt_synth.pt
+  checkpoint_every: null
+
+model:
+  module: trm_ctt                    # models/recursive_reasoning/trm_ctt.py
+  class_name: TRMCTT
+  loss_head_class_name: TRMCTTLossHead
+  hidden_size: 256
+  expansion: 4.0
+  num_heads: 4
+  head_dim: 64
+  l_layers: 2
+  h_cycles: 2
+  l_cycles: 2
+  halt_max_steps: 16
+  halt_exploration_prob: 0.1
+  halt_max_prob: -1
+  forward_dtype: float32

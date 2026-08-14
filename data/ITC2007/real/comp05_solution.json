@@ -1,0 +1,920 @@
+{
+  "status": "FEASIBLE",
+  "objective": 686.0,
+  "best_bound": 45.0,
+  "solve_time": 45.166487522000004,
+  "assignment": {
+    "LinTed1#0": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "15"
+    },
+    "AlfInf#0": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 19,
+      "room": "B"
+    },
+    "LetIta1#0": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "A"
+    },
+    "LetIta1#1": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 13,
+      "room": "A"
+    },
+    "LetIta1#2": {
+      "day": 0,
+      "period_in_day": 0,
+      "period": 0,
+      "room": "A"
+    },
+    "FilTesItaCS#0": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 21,
+      "room": "B"
+    },
+    "FilTesItaCS#1": {
+      "day": 4,
+      "period_in_day": 3,
+      "period": 27,
+      "room": "B"
+    },
+    "FilTesItaCS#2": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 13,
+      "room": "B"
+    },
+    "LinGreA#0": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 20,
+      "room": "15"
+    },
+    "LinGreA#1": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 14,
+      "room": "15"
+    },
+    "LinGreA#2": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 19,
+      "room": "15"
+    },
+    "LinLatA#0": {
+      "day": 1,
+      "period_in_day": 4,
+      "period": 10,
+      "room": "L"
+    },
+    "LinLatA#1": {
+      "day": 0,
+      "period_in_day": 5,
+      "period": 5,
+      "room": "L"
+    },
+    "LinLetGre1#0": {
+      "day": 5,
+      "period_in_day": 0,
+      "period": 30,
+      "room": "B"
+    },
+    "LinLetGre1#1": {
+      "day": 3,
+      "period_in_day": 0,
+      "period": 18,
+      "room": "B"
+    },
+    "LinLetGre1#2": {
+      "day": 5,
+      "period_in_day": 1,
+      "period": 31,
+      "room": "B"
+    },
+    "LinLetLat1#0": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 7,
+      "room": "A"
+    },
+    "LinLetLat1#1": {
+      "day": 1,
+      "period_in_day": 0,
+      "period": 6,
+      "room": "A"
+    },
+    "LinLetLat1#2": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 14,
+      "room": "A"
+    },
+    "LetCriAnt#0": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "10"
+    },
+    "LetCriAnt#1": {
+      "day": 1,
+      "period_in_day": 5,
+      "period": 11,
+      "room": "10"
+    },
+    "LetCriAnt#2": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 25,
+      "room": "10"
+    },
+    "Papiro#0": {
+      "day": 3,
+      "period_in_day": 4,
+      "period": 22,
+      "room": "A"
+    },
+    "Papiro#1": {
+      "day": 5,
+      "period_in_day": 0,
+      "period": 30,
+      "room": "A"
+    },
+    "Papiro#2": {
+      "day": 4,
+      "period_in_day": 4,
+      "period": 28,
+      "room": "A"
+    },
+    "EpiGre#0": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 26,
+      "room": "10"
+    },
+    "EpiGre#1": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 15,
+      "room": "B"
+    },
+    "EpiGre#2": {
+      "day": 4,
+      "period_in_day": 3,
+      "period": 27,
+      "room": "10"
+    },
+    "StoMod1#0": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 9,
+      "room": "A"
+    },
+    "StoMod1#1": {
+      "day": 0,
+      "period_in_day": 5,
+      "period": 5,
+      "room": "A"
+    },
+    "StoMod1#2": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 8,
+      "room": "A"
+    },
+    "StoCon#0": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "A"
+    },
+    "StoCon#1": {
+      "day": 1,
+      "period_in_day": 5,
+      "period": 11,
+      "room": "A"
+    },
+    "Geo2#0": {
+      "day": 4,
+      "period_in_day": 4,
+      "period": 28,
+      "room": "O"
+    },
+    "Geo2#1": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "O"
+    },
+    "Geo2#2": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 16,
+      "room": "O"
+    },
+    "AntCul1#0": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 15,
+      "room": "A"
+    },
+    "AntCul1#1": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "A"
+    },
+    "AntCul1#2": {
+      "day": 4,
+      "period_in_day": 3,
+      "period": 27,
+      "room": "A"
+    },
+    "StoFil1#0": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 9,
+      "room": "B"
+    },
+    "StoFil1#1": {
+      "day": 2,
+      "period_in_day": 0,
+      "period": 12,
+      "room": "B"
+    },
+    "StoFil1#2": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "B"
+    },
+    "StoCriChi#0": {
+      "day": 5,
+      "period_in_day": 1,
+      "period": 31,
+      "room": "L"
+    },
+    "StoCriChi#1": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 21,
+      "room": "L"
+    },
+    "StoCriChi#2": {
+      "day": 4,
+      "period_in_day": 5,
+      "period": 29,
+      "room": "L"
+    },
+    "StoSci#0": {
+      "day": 5,
+      "period_in_day": 0,
+      "period": 30,
+      "room": "14"
+    },
+    "StoSci#1": {
+      "day": 3,
+      "period_in_day": 4,
+      "period": 22,
+      "room": "14"
+    },
+    "StoSci#2": {
+      "day": 1,
+      "period_in_day": 4,
+      "period": 10,
+      "room": "14"
+    },
+    "MetRicArc#0": {
+      "day": 3,
+      "period_in_day": 0,
+      "period": 18,
+      "room": "O"
+    },
+    "MetRicArc#1": {
+      "day": 2,
+      "period_in_day": 0,
+      "period": 12,
+      "room": "O"
+    },
+    "MetRicArc#2": {
+      "day": 5,
+      "period_in_day": 0,
+      "period": 30,
+      "room": "O"
+    },
+    "ArcCla1#0": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 16,
+      "room": "10"
+    },
+    "ArcCla1#1": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 8,
+      "room": "10"
+    },
+    "ArcCla1#2": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 9,
+      "room": "10"
+    },
+    "LinLatB#0": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 19,
+      "room": "M"
+    },
+    "LinLatB#1": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 7,
+      "room": "M"
+    },
+    "LinLatB#2": {
+      "day": 5,
+      "period_in_day": 1,
+      "period": 31,
+      "room": "M"
+    },
+    "Numism#0": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 13,
+      "room": "M"
+    },
+    "Numism#1": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 8,
+      "room": "M"
+    },
+    "Numism#2": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 9,
+      "room": "M"
+    },
+    "PrePro#0": {
+      "day": 2,
+      "period_in_day": 0,
+      "period": 12,
+      "room": "15"
+    },
+    "PrePro#1": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 21,
+      "room": "15"
+    },
+    "PrePro#2": {
+      "day": 5,
+      "period_in_day": 1,
+      "period": 31,
+      "room": "15"
+    },
+    "StoVicOriAnt#0": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 15,
+      "room": "C1"
+    },
+    "StoVicOriAnt#1": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 21,
+      "room": "C1"
+    },
+    "StoVicOriAnt#2": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 7,
+      "room": "C1"
+    },
+    "ArcEge#0": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 20,
+      "room": "14"
+    },
+    "ArcEge#1": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 25,
+      "room": "14"
+    },
+    "ArcEge#2": {
+      "day": 4,
+      "period_in_day": 0,
+      "period": 24,
+      "room": "14"
+    },
+    "FilSem#0": {
+      "day": 0,
+      "period_in_day": 0,
+      "period": 0,
+      "room": "14"
+    },
+    "FilSem#1": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "14"
+    },
+    "FilSem#2": {
+      "day": 3,
+      "period_in_day": 5,
+      "period": 23,
+      "room": "14"
+    },
+    "LegBenCul1#0": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 26,
+      "room": "A"
+    },
+    "LegBenCul1#1": {
+      "day": 3,
+      "period_in_day": 0,
+      "period": 18,
+      "room": "A"
+    },
+    "Bibeco#0": {
+      "day": 4,
+      "period_in_day": 5,
+      "period": 29,
+      "room": "B"
+    },
+    "Bibeco#1": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 15,
+      "room": "L"
+    },
+    "Bibeco#2": {
+      "day": 1,
+      "period_in_day": 5,
+      "period": 11,
+      "room": "B"
+    },
+    "ConBenArcLib#0": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 16,
+      "room": "L"
+    },
+    "ConBenArcLib#1": {
+      "day": 3,
+      "period_in_day": 5,
+      "period": 23,
+      "room": "L"
+    },
+    "ConBenArcLib#2": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "L"
+    },
+    "ResBenArcLib#0": {
+      "day": 3,
+      "period_in_day": 5,
+      "period": 23,
+      "room": "A"
+    },
+    "ResBenArcLib#1": {
+      "day": 3,
+      "period_in_day": 4,
+      "period": 22,
+      "room": "B"
+    },
+    "ResBenArcLib#2": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 21,
+      "room": "A"
+    },
+    "InfArcBib#0": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "10"
+    },
+    "InfArcBib#1": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "10"
+    },
+    "InfArcBib#2": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 20,
+      "room": "10"
+    },
+    "TeoTecCatCla#0": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "10"
+    },
+    "TeoTecCatCla#1": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 15,
+      "room": "10"
+    },
+    "TeoTecCatCla#2": {
+      "day": 1,
+      "period_in_day": 4,
+      "period": 10,
+      "room": "10"
+    },
+    "StoArtMed1#0": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 25,
+      "room": "B"
+    },
+    "StoArtMed1#1": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 26,
+      "room": "B"
+    },
+    "StoArtMed1#2": {
+      "day": 4,
+      "period_in_day": 0,
+      "period": 24,
+      "room": "B"
+    },
+    "IcoIcoA#0": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "B"
+    },
+    "IcoIcoA#1": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 14,
+      "room": "B"
+    },
+    "IcoIcoA#2": {
+      "day": 1,
+      "period_in_day": 0,
+      "period": 6,
+      "room": "B"
+    },
+    "IcoIcoB#0": {
+      "day": 5,
+      "period_in_day": 3,
+      "period": 33,
+      "room": "10"
+    },
+    "IcoIcoB#1": {
+      "day": 2,
+      "period_in_day": 0,
+      "period": 12,
+      "room": "10"
+    },
+    "IcoIcoB#2": {
+      "day": 5,
+      "period_in_day": 2,
+      "period": 32,
+      "room": "10"
+    },
+    "StoArtMod1#0": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "A"
+    },
+    "StoArtMod1#1": {
+      "day": 2,
+      "period_in_day": 0,
+      "period": 12,
+      "room": "A"
+    },
+    "MetRicStoArt#0": {
+      "day": 5,
+      "period_in_day": 0,
+      "period": 30,
+      "room": "10"
+    },
+    "MetRicStoArt#1": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 19,
+      "room": "10"
+    },
+    "MetRicStoArt#2": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 13,
+      "room": "10"
+    },
+    "StoArtLatAmeA#0": {
+      "day": 1,
+      "period_in_day": 4,
+      "period": 10,
+      "room": "B"
+    },
+    "StoArtLatAmeA#1": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "B"
+    },
+    "StoArtLatAmeA#2": {
+      "day": 0,
+      "period_in_day": 0,
+      "period": 0,
+      "room": "B"
+    },
+    "StoArtCon1#0": {
+      "day": 4,
+      "period_in_day": 0,
+      "period": 24,
+      "room": "A"
+    },
+    "StoArtCon1#1": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 20,
+      "room": "A"
+    },
+    "StoArtCon1#2": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 25,
+      "room": "A"
+    },
+    "PsiArt#0": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 21,
+      "room": "14"
+    },
+    "PsiArt#1": {
+      "day": 5,
+      "period_in_day": 1,
+      "period": 31,
+      "room": "14"
+    },
+    "PsiArt#2": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 9,
+      "room": "14"
+    },
+    "ArcPae#0": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 19,
+      "room": "A"
+    },
+    "LetIta4CS#0": {
+      "day": 4,
+      "period_in_day": 3,
+      "period": 27,
+      "room": "14"
+    },
+    "LetIta4CS#1": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 15,
+      "room": "14"
+    },
+    "LetIta4CS#2": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 26,
+      "room": "14"
+    },
+    "StoGreCS#0": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "L"
+    },
+    "StoGreCS#1": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 8,
+      "room": "L"
+    },
+    "StoGreCS#2": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "L"
+    },
+    "StoMedCS#0": {
+      "day": 4,
+      "period_in_day": 4,
+      "period": 28,
+      "room": "10"
+    },
+    "StoMedCS#1": {
+      "day": 3,
+      "period_in_day": 5,
+      "period": 23,
+      "room": "10"
+    },
+    "StoMedCS#2": {
+      "day": 3,
+      "period_in_day": 4,
+      "period": 22,
+      "room": "10"
+    },
+    "BioArcCS#0": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 9,
+      "room": "C1"
+    },
+    "BioArcCS#1": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 13,
+      "room": "C1"
+    },
+    "BioArcCS#2": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 14,
+      "room": "C1"
+    },
+    "Antrop#0": {
+      "day": 2,
+      "period_in_day": 0,
+      "period": 12,
+      "room": "C1"
+    },
+    "Antrop#1": {
+      "day": 1,
+      "period_in_day": 5,
+      "period": 11,
+      "room": "C1"
+    },
+    "Antrop#2": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "C1"
+    },
+    "LegBenCul2#0": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 20,
+      "room": "B"
+    },
+    "LegBenCul2#1": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 7,
+      "room": "B"
+    },
+    "LegBenCul2#2": {
+      "day": 4,
+      "period_in_day": 4,
+      "period": 28,
+      "room": "B"
+    },
+    "StoArtMed2CS#0": {
+      "day": 4,
+      "period_in_day": 5,
+      "period": 29,
+      "room": "10"
+    },
+    "StoArtMed2CS#1": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 21,
+      "room": "10"
+    },
+    "StoArtMed2CS#2": {
+      "day": 5,
+      "period_in_day": 1,
+      "period": 31,
+      "room": "10"
+    },
+    "ChiAppBenCul#0": {
+      "day": 3,
+      "period_in_day": 4,
+      "period": 22,
+      "room": "15"
+    },
+    "ChiAppBenCul#1": {
+      "day": 1,
+      "period_in_day": 4,
+      "period": 10,
+      "room": "15"
+    },
+    "ChiAppBenCul#2": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "15"
+    },
+    "StoArc#0": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 19,
+      "room": "O"
+    },
+    "StoArc#1": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "O"
+    },
+    "StoArc#2": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 14,
+      "room": "O"
+    },
+    "StoArt#0": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "M"
+    },
+    "StoArt#1": {
+      "day": 1,
+      "period_in_day": 4,
+      "period": 10,
+      "room": "M"
+    },
+    "StoArt#2": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 14,
+      "room": "M"
+    },
+    "FonSocAntCulI#0": {
+      "day": 4,
+      "period_in_day": 4,
+      "period": 28,
+      "room": "L"
+    },
+    "FonSocAntCulI#1": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 16,
+      "room": "B"
+    },
+    "FonSocAntCulI#2": {
+      "day": 2,
+      "period_in_day": 5,
+      "period": 17,
+      "room": "B"
+    },
+    "Bibgra#0": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 16,
+      "room": "A"
+    },
+    "Bibgra#1": {
+      "day": 1,
+      "period_in_day": 4,
+      "period": 10,
+      "room": "A"
+    },
+    "Bibgra#2": {
+      "day": 2,
+      "period_in_day": 5,
+      "period": 17,
+      "room": "A"
+    },
+    "BibgraCS#0": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "M"
+    },
+    "BibgraCS#1": {
+      "day": 2,
+      "period_in_day": 5,
+      "period": 17,
+      "room": "M"
+    },
+    "BibgraCS#2": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 16,
+      "room": "M"
+    }
+  }
+}

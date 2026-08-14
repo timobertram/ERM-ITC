@@ -1,0 +1,1514 @@
+{
+  "status": "FEASIBLE",
+  "objective": 126.0,
+  "best_bound": 22.0,
+  "solve_time": 120.154361765,
+  "assignment": {
+    "ChiGenAn#0": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 22,
+      "room": "B"
+    },
+    "ChiGenAn#1": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 7,
+      "room": "B"
+    },
+    "ChiGenAn#2": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 16,
+      "room": "B"
+    },
+    "GeoAn#0": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "L"
+    },
+    "GeoAn#1": {
+      "day": 4,
+      "period_in_day": 3,
+      "period": 23,
+      "room": "L"
+    },
+    "GeoAn#2": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 17,
+      "room": "L"
+    },
+    "CamEleAn#0": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "DS1"
+    },
+    "CamEleAn#1": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 12,
+      "room": "DS1"
+    },
+    "CamEleAn#2": {
+      "day": 3,
+      "period_in_day": 0,
+      "period": 15,
+      "room": "DS1"
+    },
+    "FonChiAn#0": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 13,
+      "room": "B"
+    },
+    "FonChiAn#1": {
+      "day": 3,
+      "period_in_day": 4,
+      "period": 19,
+      "room": "B"
+    },
+    "FonChiAn#2": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "B"
+    },
+    "IngConAn#0": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "L"
+    },
+    "IngConAn#1": {
+      "day": 3,
+      "period_in_day": 4,
+      "period": 19,
+      "room": "L"
+    },
+    "IngConAn#2": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 12,
+      "room": "L"
+    },
+    "StrIndAn#0": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 8,
+      "room": "38"
+    },
+    "StrIndAn#1": {
+      "day": 0,
+      "period_in_day": 0,
+      "period": 0,
+      "room": "38"
+    },
+    "StrIndAn#2": {
+      "day": 4,
+      "period_in_day": 0,
+      "period": 20,
+      "room": "38"
+    },
+    "TecCosAn#0": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 21,
+      "room": "52"
+    },
+    "TecCosAn#1": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 16,
+      "room": "52"
+    },
+    "TecCosAn#2": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "52"
+    },
+    "Mat1Cn#0": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 21,
+      "room": "E"
+    },
+    "Mat1Cn#1": {
+      "day": 3,
+      "period_in_day": 0,
+      "period": 15,
+      "room": "E"
+    },
+    "Mat1Cn#2": {
+      "day": 1,
+      "period_in_day": 0,
+      "period": 5,
+      "room": "E"
+    },
+    "Mat1Cn#3": {
+      "day": 0,
+      "period_in_day": 0,
+      "period": 0,
+      "room": "E"
+    },
+    "Mat1Cn#4": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 16,
+      "room": "E"
+    },
+    "MecRazCn#0": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 13,
+      "room": "D"
+    },
+    "MecRazCn#1": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 8,
+      "room": "D"
+    },
+    "MecRazCn#2": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "D"
+    },
+    "DisCn#0": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 14,
+      "room": "A"
+    },
+    "DisCn#1": {
+      "day": 1,
+      "period_in_day": 4,
+      "period": 9,
+      "room": "A"
+    },
+    "DisCn#2": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "A"
+    },
+    "TecMatCn#0": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 12,
+      "room": "G"
+    },
+    "TecMatCn#1": {
+      "day": 4,
+      "period_in_day": 3,
+      "period": 23,
+      "room": "G"
+    },
+    "TecMatCn#2": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 17,
+      "room": "G"
+    },
+    "ArcTecCn#0": {
+      "day": 3,
+      "period_in_day": 4,
+      "period": 19,
+      "room": "27"
+    },
+    "ArcTecCn#1": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 12,
+      "room": "27"
+    },
+    "ArcTecCn#2": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "27"
+    },
+    "DisEdiCn#0": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 17,
+      "room": "31"
+    },
+    "DisEdiCn#1": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "31"
+    },
+    "DisEdiCn#2": {
+      "day": 4,
+      "period_in_day": 3,
+      "period": 23,
+      "room": "31"
+    },
+    "Idr2Cn#0": {
+      "day": 0,
+      "period_in_day": 0,
+      "period": 0,
+      "room": "DS2"
+    },
+    "Idr2Cn#1": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 16,
+      "room": "DS2"
+    },
+    "Idr2Cn#2": {
+      "day": 2,
+      "period_in_day": 0,
+      "period": 10,
+      "room": "DS2"
+    },
+    "Mat1En#0": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 11,
+      "room": "27"
+    },
+    "Mat1En#1": {
+      "day": 1,
+      "period_in_day": 0,
+      "period": 5,
+      "room": "27"
+    },
+    "Mat1En#2": {
+      "day": 3,
+      "period_in_day": 0,
+      "period": 15,
+      "room": "27"
+    },
+    "Mat1En#3": {
+      "day": 2,
+      "period_in_day": 0,
+      "period": 10,
+      "room": "27"
+    },
+    "Mat1En#4": {
+      "day": 4,
+      "period_in_day": 0,
+      "period": 20,
+      "room": "27"
+    },
+    "ChiStaEn#0": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 7,
+      "room": "E"
+    },
+    "ChiStaEn#1": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 11,
+      "room": "E"
+    },
+    "ChiStaEn#2": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "E"
+    },
+    "ConAutEn#0": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 12,
+      "room": "F"
+    },
+    "ConAutEn#1": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 17,
+      "room": "F"
+    },
+    "ConAutEn#2": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 8,
+      "room": "F"
+    },
+    "RetLogEn#0": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "27"
+    },
+    "RetLogEn#1": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "27"
+    },
+    "RetLogEn#2": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 6,
+      "room": "27"
+    },
+    "TeoRetEn#0": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 18,
+      "room": "B"
+    },
+    "TeoRetEn#1": {
+      "day": 2,
+      "period_in_day": 0,
+      "period": 10,
+      "room": "B"
+    },
+    "TeoRetEn#2": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "B"
+    },
+    "ComEleEn#0": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 11,
+      "room": "B"
+    },
+    "ComEleEn#1": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 21,
+      "room": "B"
+    },
+    "ComEleEn#2": {
+      "day": 1,
+      "period_in_day": 4,
+      "period": 9,
+      "room": "B"
+    },
+    "EleSis1En#0": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 22,
+      "room": "E"
+    },
+    "EleSis1En#1": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "E"
+    },
+    "EleSis1En#2": {
+      "day": 4,
+      "period_in_day": 3,
+      "period": 23,
+      "room": "E"
+    },
+    "MetMatEn#0": {
+      "day": 3,
+      "period_in_day": 0,
+      "period": 15,
+      "room": "37"
+    },
+    "MetMatEn#1": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 6,
+      "room": "37"
+    },
+    "MetMatEn#2": {
+      "day": 1,
+      "period_in_day": 0,
+      "period": 5,
+      "room": "37"
+    },
+    "RetCal1G1n#0": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "A"
+    },
+    "RetCal1G1n#1": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 6,
+      "room": "A"
+    },
+    "RetCal1G1n#2": {
+      "day": 1,
+      "period_in_day": 0,
+      "period": 5,
+      "room": "A"
+    },
+    "Mat1G2n#0": {
+      "day": 0,
+      "period_in_day": 0,
+      "period": 0,
+      "room": "G"
+    },
+    "Mat1G2n#1": {
+      "day": 3,
+      "period_in_day": 0,
+      "period": 15,
+      "room": "G"
+    },
+    "Mat1G2n#2": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 16,
+      "room": "G"
+    },
+    "Mat1G2n#3": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 6,
+      "room": "G"
+    },
+    "Mat1G2n#4": {
+      "day": 4,
+      "period_in_day": 0,
+      "period": 20,
+      "room": "G"
+    },
+    "ChiG2n#0": {
+      "day": 3,
+      "period_in_day": 4,
+      "period": 19,
+      "room": "G"
+    },
+    "ChiG2n#1": {
+      "day": 1,
+      "period_in_day": 0,
+      "period": 5,
+      "room": "G"
+    },
+    "ChiG2n#2": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 13,
+      "room": "G"
+    },
+    "DisComEsG2n#0": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "B"
+    },
+    "FonMecG2n#0": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 21,
+      "room": "F"
+    },
+    "FonMecG2n#1": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 18,
+      "room": "F"
+    },
+    "FonMecG2n#2": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 6,
+      "room": "F"
+    },
+    "TerAppG2n#0": {
+      "day": 1,
+      "period_in_day": 4,
+      "period": 9,
+      "room": "27"
+    },
+    "TerAppG2n#1": {
+      "day": 0,
+      "period_in_day": 0,
+      "period": 0,
+      "room": "27"
+    },
+    "TerAppG2n#2": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 14,
+      "room": "27"
+    },
+    "CalProG2n#0": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "38"
+    },
+    "CalProG2n#1": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "38"
+    },
+    "CalProG2n#2": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 13,
+      "room": "38"
+    },
+    "Mat1Mn#0": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 21,
+      "room": "D"
+    },
+    "Mat1Mn#1": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 6,
+      "room": "D"
+    },
+    "Mat1Mn#2": {
+      "day": 0,
+      "period_in_day": 0,
+      "period": 0,
+      "room": "D"
+    },
+    "Mat1Mn#3": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 16,
+      "room": "D"
+    },
+    "Mat1Mn#4": {
+      "day": 4,
+      "period_in_day": 0,
+      "period": 20,
+      "room": "D"
+    },
+    "DisIndMn#0": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 8,
+      "room": "G"
+    },
+    "DisIndMn#1": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 22,
+      "room": "G"
+    },
+    "DisIndEsMn#0": {
+      "day": 0,
+      "period_in_day": 0,
+      "period": 0,
+      "room": "B"
+    },
+    "FluMn#0": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 7,
+      "room": "G"
+    },
+    "FluMn#1": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "G"
+    },
+    "FluMn#2": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 14,
+      "room": "G"
+    },
+    "ComMecMn#0": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 13,
+      "room": "L"
+    },
+    "ComMecMn#1": {
+      "day": 3,
+      "period_in_day": 0,
+      "period": 15,
+      "room": "L"
+    },
+    "ComMecMn#2": {
+      "day": 1,
+      "period_in_day": 0,
+      "period": 5,
+      "room": "L"
+    },
+    "CosMacMn#0": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 17,
+      "room": "E"
+    },
+    "CosMacMn#1": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 8,
+      "room": "E"
+    },
+    "CosMacMn#2": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 12,
+      "room": "E"
+    },
+    "TecMec1Mn#0": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 14,
+      "room": "L"
+    },
+    "TecMec1Mn#1": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 16,
+      "room": "L"
+    },
+    "TecMec1Mn#2": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 6,
+      "room": "L"
+    },
+    "Mat1Ar#0": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "D"
+    },
+    "Mat1Ar#1": {
+      "day": 4,
+      "period_in_day": 3,
+      "period": 23,
+      "room": "D"
+    },
+    "Mat1Ar#2": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 12,
+      "room": "D"
+    },
+    "FonInfAr#0": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 11,
+      "room": "L"
+    },
+    "FonInfAr#1": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "L"
+    },
+    "FonInfAr#2": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 22,
+      "room": "L"
+    },
+    "LabEle1Ar#0": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 6,
+      "room": "31"
+    },
+    "LabEle1Ar#1": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "31"
+    },
+    "LabEle1Ar#2": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 7,
+      "room": "31"
+    },
+    "LabEle1Ar#3": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 21,
+      "room": "31"
+    },
+    "LabEle1Ar#4": {
+      "day": 1,
+      "period_in_day": 0,
+      "period": 5,
+      "room": "31"
+    },
+    "LabEle1Ar#5": {
+      "day": 0,
+      "period_in_day": 0,
+      "period": 0,
+      "room": "31"
+    },
+    "LabEle1Ar#6": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 8,
+      "room": "31"
+    },
+    "LabEle2Ar#0": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "DS1"
+    },
+    "LabEle2Ar#1": {
+      "day": 0,
+      "period_in_day": 0,
+      "period": 0,
+      "room": "DS1"
+    },
+    "LabEle2Ar#2": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "DS1"
+    },
+    "LabEle2Ar#3": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 7,
+      "room": "DS1"
+    },
+    "LabEle2Ar#4": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 17,
+      "room": "DS1"
+    },
+    "LabEle2Ar#5": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 18,
+      "room": "DS1"
+    },
+    "LabEle2Ar#6": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 8,
+      "room": "DS1"
+    },
+    "LabEle3Ar#0": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "50"
+    },
+    "LabEle3Ar#1": {
+      "day": 3,
+      "period_in_day": 0,
+      "period": 15,
+      "room": "50"
+    },
+    "LabEle3Ar#2": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 16,
+      "room": "50"
+    },
+    "LabEle3Ar#3": {
+      "day": 1,
+      "period_in_day": 0,
+      "period": 5,
+      "room": "50"
+    },
+    "LabEle3Ar#4": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 6,
+      "room": "50"
+    },
+    "LabEle3Ar#5": {
+      "day": 0,
+      "period_in_day": 0,
+      "period": 0,
+      "room": "50"
+    },
+    "LabEle3Ar#6": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "50"
+    },
+    "GeoAppAns#0": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 17,
+      "room": "36"
+    },
+    "GeoAppAns#1": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "36"
+    },
+    "GeoAppAns#2": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 22,
+      "room": "36"
+    },
+    "IdrNumAns#0": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 7,
+      "room": "36"
+    },
+    "IdrNumAns#1": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 13,
+      "room": "36"
+    },
+    "IdrNumAns#2": {
+      "day": 4,
+      "period_in_day": 3,
+      "period": 23,
+      "room": "36"
+    },
+    "MecSuoAns#0": {
+      "day": 0,
+      "period_in_day": 0,
+      "period": 0,
+      "room": "36"
+    },
+    "MecSuoAns#1": {
+      "day": 1,
+      "period_in_day": 0,
+      "period": 5,
+      "room": "36"
+    },
+    "MecSuoAns#2": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 12,
+      "room": "36"
+    },
+    "PriIngAns#0": {
+      "day": 3,
+      "period_in_day": 4,
+      "period": 19,
+      "room": "37"
+    },
+    "PriIngAns#1": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 14,
+      "room": "37"
+    },
+    "PriIngAns#2": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 21,
+      "room": "37"
+    },
+    "StaPenAns#0": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "36"
+    },
+    "StaPenAns#1": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 14,
+      "room": "36"
+    },
+    "StaPenAns#2": {
+      "day": 3,
+      "period_in_day": 0,
+      "period": 15,
+      "room": "36"
+    },
+    "StaAns#0": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "36"
+    },
+    "StaAns#1": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 16,
+      "room": "36"
+    },
+    "StaAns#2": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 6,
+      "room": "36"
+    },
+    "ArcTecCns#0": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 11,
+      "room": "36"
+    },
+    "ArcTecCns#1": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 8,
+      "room": "36"
+    },
+    "ArcTecCns#2": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 18,
+      "room": "36"
+    },
+    "EleTel1Ens#0": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 16,
+      "room": "A"
+    },
+    "EleTel1Ens#1": {
+      "day": 4,
+      "period_in_day": 0,
+      "period": 20,
+      "room": "A"
+    },
+    "EleTel1Ens#2": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 21,
+      "room": "A"
+    },
+    "SisTel1Ens#0": {
+      "day": 4,
+      "period_in_day": 4,
+      "period": 24,
+      "room": "DS2"
+    },
+    "SisTel1Ens#1": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "DS2"
+    },
+    "SisTel1Ens#2": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 17,
+      "room": "DS2"
+    },
+    "AppIndGns#0": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 11,
+      "room": "D"
+    },
+    "AppIndGns#1": {
+      "day": 1,
+      "period_in_day": 4,
+      "period": 9,
+      "room": "D"
+    },
+    "AppIndGns#2": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 18,
+      "room": "D"
+    },
+    "RetCal2Gns#0": {
+      "day": 1,
+      "period_in_day": 4,
+      "period": 9,
+      "room": "F"
+    },
+    "RetCal2Gns#1": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 11,
+      "room": "F"
+    },
+    "RetCal2Gns#2": {
+      "day": 2,
+      "period_in_day": 0,
+      "period": 10,
+      "room": "F"
+    },
+    "TecCos1Cv#0": {
+      "day": 4,
+      "period_in_day": 4,
+      "period": 24,
+      "room": "G"
+    },
+    "TecCos1Cv#1": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 11,
+      "room": "G"
+    },
+    "TecCos1Cv#2": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 18,
+      "room": "G"
+    },
+    "StoArcCv#0": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 21,
+      "room": "DS1"
+    },
+    "StoArcCv#1": {
+      "day": 1,
+      "period_in_day": 0,
+      "period": 5,
+      "room": "DS1"
+    },
+    "StoArcCv#2": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 6,
+      "room": "DS1"
+    },
+    "StoArcCv#3": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 13,
+      "room": "DS1"
+    },
+    "StoArcCv#4": {
+      "day": 4,
+      "period_in_day": 0,
+      "period": 20,
+      "room": "DS1"
+    },
+    "TeoStr1Cv#0": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 8,
+      "room": "37"
+    },
+    "TeoStr1Cv#1": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 22,
+      "room": "37"
+    },
+    "TeoStr1Cv#2": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "37"
+    },
+    "MecCom1Cv#0": {
+      "day": 3,
+      "period_in_day": 1,
+      "period": 16,
+      "room": "37"
+    },
+    "MecCom1Cv#1": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "37"
+    },
+    "MecCom1Cv#2": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 7,
+      "room": "37"
+    },
+    "ArcComCv#0": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 14,
+      "room": "DS2"
+    },
+    "ArcComCv#1": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 22,
+      "room": "DS2"
+    },
+    "ArcComCv#2": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "DS2"
+    },
+    "CalAut1Cv#0": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 12,
+      "room": "37"
+    },
+    "CalAut1Cv#1": {
+      "day": 1,
+      "period_in_day": 4,
+      "period": 9,
+      "room": "37"
+    },
+    "CalAut1Cv#2": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 17,
+      "room": "37"
+    },
+    "CosZonCv#0": {
+      "day": 0,
+      "period_in_day": 0,
+      "period": 0,
+      "room": "37"
+    },
+    "CosZonCv#1": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 13,
+      "room": "37"
+    },
+    "CosZonCv#2": {
+      "day": 4,
+      "period_in_day": 3,
+      "period": 23,
+      "room": "37"
+    },
+    "ImpTec1Cv#0": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 13,
+      "room": "A"
+    },
+    "ImpTec1Cv#1": {
+      "day": 3,
+      "period_in_day": 4,
+      "period": 19,
+      "room": "A"
+    },
+    "ImpTec1Cv#2": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "A"
+    },
+    "IdrAppCv#0": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 18,
+      "room": "38"
+    },
+    "IdrAppCv#1": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 11,
+      "room": "38"
+    },
+    "IdrAppCv#2": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "38"
+    },
+    "IdrAppCv#3": {
+      "day": 1,
+      "period_in_day": 0,
+      "period": 5,
+      "room": "38"
+    },
+    "IdrAppCv#4": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 7,
+      "room": "38"
+    },
+    "RivSpeCv#0": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 22,
+      "room": "38"
+    },
+    "RivSpeCv#1": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 12,
+      "room": "38"
+    },
+    "RivSpeCv#2": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 21,
+      "room": "38"
+    },
+    "RivSpeCv#3": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 17,
+      "room": "38"
+    },
+    "RivSpeCv#4": {
+      "day": 1,
+      "period_in_day": 1,
+      "period": 6,
+      "room": "38"
+    },
+    "CalEle1Ev#0": {
+      "day": 4,
+      "period_in_day": 2,
+      "period": 22,
+      "room": "A"
+    },
+    "CalEle1Ev#1": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "A"
+    },
+    "CalEle1Ev#2": {
+      "day": 4,
+      "period_in_day": 3,
+      "period": 23,
+      "room": "A"
+    },
+    "CamEle1Ev#0": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 8,
+      "room": "B"
+    },
+    "CamEle1Ev#1": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 12,
+      "room": "B"
+    },
+    "CamEle1Ev#2": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "B"
+    },
+    "EleIndEv#0": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 7,
+      "room": "52"
+    },
+    "EleIndEv#1": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 13,
+      "room": "52"
+    },
+    "EleIndEv#2": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 17,
+      "room": "52"
+    },
+    "EleIndEv#3": {
+      "day": 2,
+      "period_in_day": 4,
+      "period": 14,
+      "room": "52"
+    },
+    "EleIndEv#4": {
+      "day": 0,
+      "period_in_day": 2,
+      "period": 2,
+      "room": "52"
+    },
+    "GesAziGv#0": {
+      "day": 0,
+      "period_in_day": 0,
+      "period": 0,
+      "room": "A"
+    },
+    "GesAziGv#1": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 8,
+      "room": "A"
+    },
+    "GesAziGv#2": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 12,
+      "room": "A"
+    },
+    "GesAziGv#3": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 17,
+      "room": "A"
+    },
+    "GesAziGv#4": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 7,
+      "room": "A"
+    },
+    "ChiInd1Gv#0": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "31"
+    },
+    "ChiInd1Gv#1": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 11,
+      "room": "31"
+    },
+    "ChiInd1Gv#2": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 18,
+      "room": "31"
+    },
+    "ChiInd1Gv#3": {
+      "day": 1,
+      "period_in_day": 4,
+      "period": 9,
+      "room": "31"
+    },
+    "ChiInd1Gv#4": {
+      "day": 2,
+      "period_in_day": 0,
+      "period": 10,
+      "room": "31"
+    },
+    "OrgPro1Gv#0": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 18,
+      "room": "A"
+    },
+    "OrgPro1Gv#1": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 11,
+      "room": "A"
+    },
+    "OrgPro1Gv#2": {
+      "day": 2,
+      "period_in_day": 0,
+      "period": 10,
+      "room": "A"
+    },
+    "Mac1Mv#0": {
+      "day": 0,
+      "period_in_day": 1,
+      "period": 1,
+      "room": "F"
+    },
+    "Mac1Mv#1": {
+      "day": 3,
+      "period_in_day": 0,
+      "period": 15,
+      "room": "F"
+    },
+    "Mac1Mv#2": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "F"
+    },
+    "Mac1Mv#3": {
+      "day": 1,
+      "period_in_day": 0,
+      "period": 5,
+      "room": "F"
+    },
+    "Mac1Mv#4": {
+      "day": 2,
+      "period_in_day": 3,
+      "period": 13,
+      "room": "F"
+    },
+    "TerAppMv#0": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "DS2"
+    },
+    "TerAppMv#1": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 7,
+      "room": "DS2"
+    },
+    "TerAppMv#2": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 12,
+      "room": "DS2"
+    },
+    "TerAppMv#3": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 18,
+      "room": "DS2"
+    },
+    "TerAppMv#4": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 8,
+      "room": "DS2"
+    },
+    "DisAssMv#0": {
+      "day": 3,
+      "period_in_day": 2,
+      "period": 17,
+      "room": "50"
+    },
+    "DisAssMv#1": {
+      "day": 2,
+      "period_in_day": 2,
+      "period": 12,
+      "room": "50"
+    },
+    "DisAssMv#2": {
+      "day": 1,
+      "period_in_day": 2,
+      "period": 7,
+      "room": "50"
+    },
+    "DisAssMv#3": {
+      "day": 0,
+      "period_in_day": 4,
+      "period": 4,
+      "room": "50"
+    },
+    "DisAssMv#4": {
+      "day": 4,
+      "period_in_day": 1,
+      "period": 21,
+      "room": "50"
+    },
+    "MecVibMn#0": {
+      "day": 4,
+      "period_in_day": 0,
+      "period": 20,
+      "room": "52"
+    },
+    "MecVibMn#1": {
+      "day": 0,
+      "period_in_day": 3,
+      "period": 3,
+      "room": "52"
+    },
+    "MecVibMn#2": {
+      "day": 3,
+      "period_in_day": 3,
+      "period": 18,
+      "room": "52"
+    },
+    "MecVibMn#3": {
+      "day": 2,
+      "period_in_day": 1,
+      "period": 11,
+      "room": "52"
+    },
+    "MecVibMn#4": {
+      "day": 1,
+      "period_in_day": 3,
+      "period": 8,
+      "room": "52"
+    }
+  }
+}

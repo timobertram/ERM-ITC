@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.venv/
+data/*
+!data/ITC2007/
+data/ITC2007/*
+!data/ITC2007/real/
+data/ITC2007/real/*
+!data/ITC2007/real/*.ctt
+!data/ITC2007/real/*_solution.json
+outputs/
+wandb/
+*.npz
