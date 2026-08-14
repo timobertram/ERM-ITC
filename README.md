@@ -6,7 +6,7 @@ Course Timetabling, "CB-CTT") instances.
 Format reference: the official ITC2007 spec, mirrored at
 [Docheinstein/itc2007-cct](https://github.com/Docheinstein/itc2007-cct).
 
-## Workflow
+## Quick Workflow
 
 Train on the real instances (`config/ctt.yaml`: trains on `comp01`-`comp20`,
 evaluates on `comp21`):
@@ -29,7 +29,7 @@ to already exist -- `dataset.ctt_encode` only writes `<name>_encoded.npz`
 when explicitly run against a directory that has matching `.ctt` +
 `_solution.json` pairs, it isn't run automatically by anything else.
 
-## Pipeline
+## General Pipeline
 
 1. **Parse** a `.ctt` instance -- `dataset/ctt_parser.py::parse_ctt`
 
@@ -66,14 +66,14 @@ when explicitly run against a directory that has matching `.ctt` +
 
 ## Model
 
-`models/recursive_reasoning/trm_ctt.py::TRMCTT` -- one recursive latent per
-*lecture*, refined by ordinary dense self-attention. Same-curriculum/
+`models/recursive_reasoning/trm_ctt.py::TRMCTT`: one latent per
+*lecture*. Same-curriculum/
 same-teacher relations are baked into each lecture's feature vector at
 encode time (see `dataset/ctt_encode.py`). Two output heads read from the
-same recursive latent `z`, both via query/key dot product: periods score
+same recursive latent `z`, via query/key dot product: periods score
 against a learned global embedding table (shared vocab across instances),
 rooms score against that instance's own room table (rooms don't generalize
-across instances, so there's no fixed head for them). Since lectures within
+across instances). Since lectures within
 a course are interchangeable, training uses a Hungarian-matched period loss
 (`models/recursive_reasoning/trm_ctt.py::_match_period_targets`) plus a
 soft room-collision penalty.
@@ -81,15 +81,11 @@ soft room-collision penalty.
 Besides accuracy against the solver's specific solution, `pretrain_ctt.py`
 also logs `dataset/ctt_solver.py::evaluate_assignment` metrics -- the exact
 H1-H4/S1-S4 constraint counts for the model's own proposed assignment,
-independent of any reference solution (a model can find a *different* valid
-solution than the solver's). Verified to reproduce the solver's own
-objective value exactly when fed the solver's solution.
+independent of any reference solution.
 
 ## Constraints (H1-H4, S1-S4)
 
-The official ITC2007 Track 3 spec, enforced identically by `ctt_solver.py`
-(as CP-SAT constraints) and `ctt_solver.py::evaluate_assignment` (as a
-plain check against any assignment, e.g. a model's predictions):
+The official ITC2007 Track 3 spec:
 
 Hard (must never be violated in a feasible solution):
 - **H1** -- a course's own lectures must all land on distinct periods.
@@ -112,32 +108,23 @@ Soft (allowed, but penalized in the objective -- weights in `ctt_solver.ALPHA`):
   the first, per course.
 
 `evaluate_assignment`'s hard-violation *counts* (H1-H4) are "excess"
-assignments per group, not a broken/not-broken flag -- e.g. 3 lectures of
-one course sharing a single period count as 2 violations, not 1.
-`soft_objective` is the same `ALPHA`-weighted sum `ctt_solver.py` minimizes,
-so it's directly comparable to the `objective` value recorded in each
-`*_solution.json`.
+assignments per group.
+`soft_objective` is the same `ALPHA`-weighted sum `ctt_solver.py` minimizes.
 
 ## Data
 
 `data/ITC2007/real/` ships the 21 official ITC2007 competition instances
 (`comp01.ctt`-`comp21.ctt`) plus their solved `_solution.json` files
-(produced by `dataset/ctt_solver.py`) -- tracked in git despite the general
-`data/` gitignore rule (see `.gitignore`). Encoded `.npz` outputs are not
-tracked; regenerate them with `dataset/ctt_encode.py`.
+(produced by `dataset/ctt_solver.py`) and encoded `.npz` outputs.
 
-`data/ITC2007/synth/` holds synthetic instances from `dataset/ctt_generator.py`
-(same format, feasibility-checked, solved via `ctt_solver.py`) for a bigger
-training corpus -- entirely untracked (matches the general `data/`
-gitignore rule):
+`data/ITC2007/synth/` holds synthetic instances from `dataset/ctt_generator.py` (need to be generated first)
 
 ```bash
 python -m dataset.ctt_generator --count 50 --size small --out-dir data/ITC2007/synth
 ```
 
 `--size` is `small`, `medium`, or `large` (`large` covers real data's actual
-room-capacity/class-size range, up to 450/440 -- `small`/`medium` top out at
-150). Add `--jobs N` to solve instances in parallel.
+room-capacity/class-size range). Add `--jobs N` to solve instances in parallel.
 
 ## Setup
 
