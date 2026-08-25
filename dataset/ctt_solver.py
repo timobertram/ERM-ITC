@@ -47,9 +47,11 @@ def build_model(problem: CTTProblem):
 
     # H1(b): lectures of the same course must land on distinct periods
     for cid, c in problem.courses.items():
-        lecs = [(cid, li) for li in range(c.n_lectures)]
-        if len(lecs) > 1:
-            model.AddAllDifferent([period_var[l] for l in lecs])
+        # lecs = [(cid, li) for li in range(c.n_lectures)]
+        # if len(lecs) > 1:
+        #     #model.AddAllDifferent([period_var[l] for l in lecs])
+        for l in range(c.n_lectures-1):
+            model.Add(period_var[(cid,l)] < period_var[(cid,l+1)]) # symmetry breaking: order lessons for courses
 
     # H2: room occupancy -- no two lectures (any course) share (period, room)
     model.AddAllDifferent([period_var[l] * n_rooms + room_var[l] for l in lectures])
@@ -158,12 +160,31 @@ def build_model(problem: CTTProblem):
         model.Add(extra >= distinct_rooms - 1)
         objective_terms.append(ALPHA["S4"] * extra)
 
-    model.Minimize(sum(objective_terms))
-    return model, lectures, period_var, room_var, room_ids
+    # Create an explicit objective variable so we can add constraints like
+    # "objective <= value" between solves when sampling.
+    total_obj = model.NewIntVar(0, 10 ** 9, "total_objective")
+    model.Add(total_obj == sum(objective_terms))
+    return model, lectures, period_var, room_var, room_ids, total_obj
+
+
+def extract_assignment(solver, lectures, period_var, room_var, room_ids, periods_per_day) -> dict:
+    """Extracts assignment out of solver into dictionary per course lesson."""
+
+    assignment = {}
+    for lec in lectures:
+                cid, li = lec
+                p = solver.Value(period_var[lec])
+                assignment[f"{cid}#{li}"] = {
+                    "day": p // periods_per_day,
+                    "period_in_day": p % periods_per_day,
+                    "period": p,
+                    "room": room_ids[solver.Value(room_var[lec])]}
+    return assignment
 
 
 def solve(problem: CTTProblem, time_limit: float = 60.0, workers: int = 8, log_progress: bool = False) -> dict:
-    model, lectures, period_var, room_var, room_ids = build_model(problem)
+    model, lectures, period_var, room_var, room_ids, total_obj = build_model(problem)
+    model.minimize(total_obj)  # turn on optimization mode
 
     solver = cp_model.CpSolver()
     solver.parameters.max_time_in_seconds = time_limit
@@ -175,22 +196,130 @@ def solve(problem: CTTProblem, time_limit: float = 60.0, workers: int = 8, log_p
 
     result = {
         "status": solver.StatusName(status),
-        "objective": solver.ObjectiveValue() if feasible else None,
+        "objective": solver.Value(total_obj) if feasible else None,
         "best_bound": solver.BestObjectiveBound() if feasible else None,
         "solve_time": solver.WallTime(),
         "assignment": {},
     }
     if feasible:
-        for lec in lectures:
-            cid, li = lec
-            p = solver.Value(period_var[lec])
-            result["assignment"][f"{cid}#{li}"] = {
-                "day": p // problem.periods_per_day,
-                "period_in_day": p % problem.periods_per_day,
-                "period": p,
-                "room": room_ids[solver.Value(room_var[lec])],
-            }
+        result["assignment"] = extract_assignment(solver, lectures, period_var, room_var, room_ids, problem.periods_per_day)
     return result
+
+
+class SolutionCollector(cp_model.CpSolverSolutionCallback):
+    """Collects fixed number of different solutions found by solver."""
+
+    def __init__(self, lectures, period_var, room_var, room_ids, periods_per_day, limit: int):
+        cp_model.CpSolverSolutionCallback.__init__(self)
+
+        self.__solution_count = 0
+        self.__solution_limit = limit
+        self.__solutions = {}  # collect solutions in output format
+        self.lectures = lectures
+        self.period_var = period_var
+        self.room_var = room_var
+        self.room_ids = room_ids
+        self.periods_per_day = periods_per_day
+        self._seen = set()
+
+    def on_solution_callback(self) -> None:
+        # extract current solution assignment
+        assignment = extract_assignment(self, self.lectures, self.period_var, self.room_var, self.room_ids, self.periods_per_day)
+        # canonical representation to detect duplicates
+        rep = tuple((k, assignment[k]["day"], assignment[k]["period_in_day"], assignment[k]["period"], assignment[k]["room"]) for k in sorted(assignment.keys()))
+        # ignore duplicate solution
+        if rep in self._seen:
+            return
+        self._seen.add(rep) # new unique solution
+        self.__solution_count += 1
+        self.__solutions[f'assignment{self.__solution_count}'] = assignment
+        print(f'Found {self.__solution_count}')
+        if self.__solution_count >= self.__solution_limit:
+            self.stop_search()
+            print(f"Stopped search after {self.__solution_count} solutions")
+
+    def solution_count(self) -> int:
+        return self.__solution_count
+
+    def solutions(self) -> dict:
+        return self.__solutions
+
+
+def sample_solutions(problem: CTTProblem, max_solutions: int=10, timeout: float=30) -> dict:
+    """Samples given number of optimal solution. Overall time limit is timeout*(max_solutions+1)."""
+
+    model, lectures, period_var, room_var, room_ids, total_obj = build_model(problem)
+    opt_model = model.clone()
+    opt_model.minimize(total_obj)  # add objective to minimize
+
+    solver = cp_model.CpSolver()
+    solver.parameters.max_time_in_seconds = timeout
+    status = solver.Solve(opt_model)  # solve in optimization mode
+    opt = solver.Value(total_obj)
+
+    if status not in (cp_model.OPTIMAL, cp_model.FEASIBLE):
+        raise RuntimeError('No feasible solution found!')
+    elif status != cp_model.OPTIMAL:
+        print('No optimal solution found within time limit. Continuing with best one found.')
+    else:
+        print('Optimal solution found. Start sampling.')
+
+    solutions = {"Initial status": solver.StatusName(status),
+                "Initial objective": opt,
+                "Initial best_bound": solver.BestObjectiveBound(),
+                "Initial solve_time": solver.WallTime()}
+    init_sol = extract_assignment(solver, lectures, period_var, room_var, room_ids, problem.periods_per_day)
+
+    # enter sampling mode
+    solver.parameters.enumerate_all_solutions = True
+    solver.parameters.max_time_in_seconds = max_solutions * timeout
+
+    # warm start using initial solution as hint
+    for i, v in enumerate(model.proto.variables):
+        v_ = model.get_int_var_from_proto_index(i)
+        assert v.name == v_.name, "Variable names should match"
+        model.add_hint(v_, solver.value(v_))
+
+    model.Add(total_obj <= opt)  # add optimality constraint for sampling mode
+
+    solution_collector = SolutionCollector(lectures, period_var, room_var, room_ids, problem.periods_per_day, max_solutions)
+    solver.SearchForAllSolutions(model, solution_collector)  # sample at most max_solutions many solutions
+    samples = solution_collector.solutions()
+
+    solutions["Sampling time"] = solver.WallTime()
+    solutions["Number of samples"] = len(samples)
+
+    # compute average pairwise differences between sampled assignments
+    solutions["Avg pairwise differences"] = avg_differences(samples)
+
+    solutions["Assignments"] = samples
+
+    return solutions
+
+
+def avg_differences(samples):
+    """Compute differences between sampled solutions. Different period and room count as 2."""
+    sample_list = [samples[k] for k in sorted(samples.keys())]
+    n = len(sample_list)
+    if n < 2:
+        avg_diff = 0.0
+    else:
+        total_diff = 0
+        pairs = 0
+        for i in range(n):
+            a = sample_list[i]
+            for j in range(i + 1, n):
+                b = sample_list[j]
+                diff = 0
+                for lec in sorted(a.keys()):
+                    if a[lec]["period"] != b[lec]["period"]:
+                        diff += 1
+                    if a[lec]["room"] != b[lec]["room"]:
+                        diff += 1
+                total_diff += diff
+                pairs += 1
+        avg_diff = float(total_diff) / pairs if pairs else 0.0
+    return avg_diff
 
 
 def evaluate_assignment(problem: CTTProblem, period_of: Dict[Lecture, int], room_of: Dict[Lecture, str]) -> dict:
@@ -308,18 +437,27 @@ if __name__ == "__main__":
     cli = argparse.ArgumentParser()
     cli.add_argument("ctt_path", nargs="?", default="data/ITC2007/real/comp01.ctt")
     cli.add_argument("--time-limit", type=float, default=60.0)
-    cli.add_argument("--workers", type=int, default=8)
+    cli.add_argument("--workers", type=int, default=4)
     cli.add_argument("--log-progress", action="store_true")
     cli.add_argument("--out", default=None)
+    cli.add_argument("--samples", type=int, default=1, help="If >1, sample up to this many solutions.")
     args = cli.parse_args()
 
     problem = parse_ctt(args.ctt_path)
-    result = solve(problem, time_limit=args.time_limit, workers=args.workers, log_progress=args.log_progress)
 
-    print(f"status={result['status']} objective={result['objective']} bound={result['best_bound']} "
-          f"solve_time={result['solve_time']:.1f}s")
+    if args.samples is None or args.samples <= 1:
+        result = solve(problem, time_limit=args.time_limit, workers=args.workers, log_progress=args.log_progress)
+        print(f"status={result['status']} objective={result['objective']} bound={result['best_bound']} "
+              f"solve_time={result['solve_time']:.1f}s")
+        if args.out:
+            with open(args.out, "w") as f:
+                json.dump(result, f, indent=2)
+            print(f"wrote solution to {args.out}")
 
-    if args.out:
-        with open(args.out, "w") as f:
-            json.dump(result, f, indent=2)
-        print(f"wrote solution to {args.out}")
+    else:
+        sols = sample_solutions(problem, max_solutions=args.samples, timeout=args.time_limit)
+        print(f"sampled {len(sols["Assignments"])} solutions (requested {args.samples})")
+        if args.out:
+            with open(args.out, "w") as f:
+                json.dump(sols, f, indent=2)
+            print(f"wrote solutions to {args.out}")
