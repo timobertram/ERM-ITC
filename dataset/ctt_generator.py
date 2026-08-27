@@ -183,14 +183,18 @@ def _generate_and_solve_one(task):
     """Picklable worker for parallel generation: each call seeds its own rng,
     generates one instance, solves it. Returns None on infeasible/unsolved
     (including generate_problem giving up on its feasibility pre-checks)."""
-    seed, name, size, time_limit, solver_workers = task
+    seed, name, size, time_limit, solver_workers, solver_name = task
     rng = np.random.default_rng(seed)
     try:
         problem = generate_problem(rng, name, size)
     except RuntimeError:
         return None
-    from dataset.ctt_solver import solve
-    result = solve(problem, time_limit=time_limit, workers=solver_workers, log_progress=False)
+    if solver_name == "milp":
+        from dataset.ctt_solver_milp import solve_pool  # gurobipy -- needs a license, see ctt_solver_milp.py
+        result = solve_pool(problem, time_limit=time_limit, workers=solver_workers, log_progress=False, pool_solutions=10)
+    else:
+        from dataset.ctt_solver import solve  # ortools CP-SAT
+        result = solve(problem, time_limit=time_limit, workers=solver_workers, log_progress=False)
     if result["status"] not in ("OPTIMAL", "FEASIBLE"):
         return None
     return problem, result
@@ -211,11 +215,14 @@ if __name__ == "__main__":
     cli.add_argument("--size", choices=list(SIZES), default="small")
     cli.add_argument("--seed", type=int, default=0)
     cli.add_argument("--out-dir", default="data/ITC2007/synth")
-    cli.add_argument("--time-limit", type=float, default=20.0)
+    cli.add_argument("--time-limit", type=float, default=120.0)
     cli.add_argument("--prefix", default="gen")
     cli.add_argument("--jobs", type=int, default=1, help="parallel instance-solves in flight at once")
     cli.add_argument("--solver-workers", type=int, default=8,
-                      help="OR-tools search workers per instance -- lower when --jobs > 1")
+                      help="search workers/threads per instance -- lower when --jobs > 1")
+    cli.add_argument("--solver", choices=["cpsat", "milp"], default="cpsat",
+                      help="cpsat = dataset.ctt_solver (ortools, default); "
+                           "milp = dataset.ctt_solver_milp (gurobipy, needs a Gurobi license)")
     args = cli.parse_args()
 
     os.makedirs(args.out_dir, exist_ok=True)
@@ -238,7 +245,8 @@ if __name__ == "__main__":
 
         def _submit_next():
             name = f"{args.prefix}{(n_written + len(in_flight)):0{name_width}d}"
-            fut = pool.submit(_generate_and_solve_one, (seed_box[0], name, size, args.time_limit, args.solver_workers))
+            fut = pool.submit(_generate_and_solve_one,
+                              (seed_box[0], name, size, args.time_limit, args.solver_workers, args.solver))
             in_flight[fut] = name
             seed_box[0] += 1
 
