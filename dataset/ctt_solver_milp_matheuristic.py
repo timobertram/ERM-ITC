@@ -1,9 +1,9 @@
 """Fix-and-optimize matheuristic for ITC2007 Track 3 (CB-CTT), via gurobipy.
 
-Reuses dataset.ctt_solver_milp.build_model() verbatim (same x[l,p,r] MILP,
+Reuses dataset.ctt_solver_milp.build_model() verbatim (same y[c,p,r] MILP,
 same H1-H4/S1-S4 semantics) but instead of handing the whole model to Gurobi
-in one solve, repeatedly fixes most lectures to their current incumbent
-assignment and re-optimizes only a small free "neighborhood" of lectures at
+in one solve, repeatedly fixes most courses to their current incumbent
+assignment and re-optimizes only a small free "neighborhood" of courses at
 a time. This is the core technique behind Mikkelsen, Holm, Sorensen &
 Stidsen's winning entry to the 2019 International Timetabling Competition
 (ITC2019) -- see their PhD thesis / "A Parallelized Matheuristic for the
@@ -17,8 +17,10 @@ Adaptations from their setup to ours:
   - Their two variable-granularities for fixing were x_{c,t,r} (time+room)
     vs y_{c,t} (time only, room left free); they found x_{c,t,r} fixing
     "consistently better", so that's the only granularity implemented here
-    -- a free lecture's x[l,p,r] is unfixed across all (p,r), a fixed
-    lecture is pinned to exactly its incumbent (p,r).
+    -- a free course's y[c,p,r] is unfixed across all (p,r), a fixed
+    course is pinned to exactly its incumbent set of (p,r) slots. (Our
+    y[c,p,r] is the joint time+room variable, i.e. their x_{c,t,r}, not
+    their time-only y_{c,t} -- see ctt_solver_milp.py's module docstring.)
   - Their "Common-Distribution-Constraint" and "Adjacent-Classes"
     neighborhood heuristics both grow the free set along problem structure
     (classes sharing a distribution constraint, or adjacent in a conflict
@@ -72,9 +74,11 @@ import gurobipy as gp
 from gurobipy import GRB
 
 from dataset.ctt_parser import CTTProblem, parse_ctt
-from dataset.ctt_solver_milp import build_model, _extract_assignment
+from dataset.ctt_solver_milp import build_model
 
-Lecture = Tuple[str, int]
+Slot = Tuple[int, str]  # (period, room_id)
+CourseVars = Dict[str, List[Tuple[int, str, gp.Var]]]  # course_id -> every (period, room_id, y[c,p,r])
+Incumbent = Dict[str, Tuple[Slot, ...]]  # course_id -> its n_lectures (period, room) slots, sorted
 
 
 def _course_adjacency(problem: CTTProblem) -> Dict[str, set]:
@@ -94,61 +98,55 @@ def _course_adjacency(problem: CTTProblem) -> Dict[str, set]:
     return adjacency
 
 
-def _pick_free_lectures(lectures_by_course: Dict[str, List[Lecture]], target_count: int,
-                         linked: bool, rng: random.Random, adjacency: Dict[str, set]) -> set:
+def _pick_free_courses(n_lectures: Dict[str, int], target_count: int,
+                        linked: bool, rng: random.Random, adjacency: Dict[str, set]) -> set:
     """Grows a free set course-by-course (mirrors Mikkelsen & Holm: they
     extract *all* classes of a chosen course, never a partial course) until
     target_count lectures are free. linked=True also pulls in every course
     adjacent to a chosen one (shares a curriculum or teacher), matching
     their Common-Distribution-Constraint / Adjacent-Classes heuristics."""
-    course_ids = list(lectures_by_course.keys())
+    course_ids = list(n_lectures.keys())
     rng.shuffle(course_ids)
     chosen: set = set()
-    free: List[Lecture] = []
+    n_free = 0
     for cid in course_ids:
-        if len(free) >= target_count:
+        if n_free >= target_count:
             break
         if cid in chosen:
             continue
         chosen.add(cid)
-        free.extend(lectures_by_course[cid])
+        n_free += n_lectures[cid]
         if linked:
             for c2 in adjacency.get(cid, ()):
                 if c2 not in chosen:
                     chosen.add(c2)
-                    free.extend(lectures_by_course[c2])
-    return set(free)
+                    n_free += n_lectures[c2]
+    return chosen
 
 
-def _current_pr(vars_by_lecture: Dict[Lecture, List[Tuple[int, str, gp.Var]]],
-                 value_attr: str = "X") -> Dict[Lecture, Tuple[int, str]]:
+def _current_slots(vars_by_course: CourseVars, value_attr: str = "X") -> Incumbent:
     """value_attr='X' reads the incumbent; 'Xn' reads whichever pool solution
     m.Params.SolutionNumber currently points at (see solve_pool() in
     ctt_solver_milp.py for the same pattern)."""
-    pr = {}
-    for lec, entries in vars_by_lecture.items():
-        for p, rid, v in entries:
-            if getattr(v, value_attr) > 0.5:
-                pr[lec] = (p, rid)
-                break
-    return pr
+    return {
+        cid: tuple(sorted((p, rid) for p, rid, v in entries if getattr(v, value_attr) > 0.5))
+        for cid, entries in vars_by_course.items()
+    }
 
 
-def _apply_fixing(vars_by_lecture: Dict[Lecture, List[Tuple[int, str, gp.Var]]],
-                   free_set: set, incumbent: Dict[Lecture, Tuple[int, str]]) -> None:
-    for lec, entries in vars_by_lecture.items():
-        if lec in free_set:
+def _apply_fixing(vars_by_course: CourseVars, free_courses: set, incumbent: Incumbent) -> None:
+    for cid, entries in vars_by_course.items():
+        if cid in free_courses:
             for _, _, v in entries:
                 v.LB, v.UB = 0, 1
         else:
-            target = incumbent[lec]
+            target = set(incumbent[cid])
             for p, rid, v in entries:
-                on = (p, rid) == target
-                v.LB = v.UB = 1 if on else 0
+                v.LB = v.UB = 1 if (p, rid) in target else 0
 
 
-def _prove_or_bound(m: gp.Model, vars_by_lecture: Dict[Lecture, List[Tuple[int, str, gp.Var]]],
-                     incumbent: Dict[Lecture, Tuple[int, str]], best_obj: float,
+def _prove_or_bound(m: gp.Model, vars_by_course: CourseVars,
+                     incumbent: Incumbent, best_obj: float,
                      bound_time_limit: float, workers: int, log_progress: bool):
     """Unfixes every variable and gives the full model bound_time_limit
     seconds, warm-started from the heuristic's incumbent. Returns
@@ -156,12 +154,11 @@ def _prove_or_bound(m: gp.Model, vars_by_lecture: Dict[Lecture, List[Tuple[int, 
     are updated in place if the unrestricted search finds something better
     (it might: this is a genuinely larger search than any single
     fix-and-optimize iteration)."""
-    for entries in vars_by_lecture.values():
-        for _, _, v in entries:
+    for cid, entries in vars_by_course.items():
+        target = set(incumbent[cid])
+        for p, rid, v in entries:
             v.LB, v.UB = 0, 1
-    for lec, (p, rid) in incumbent.items():
-        for pp, rr, v in vars_by_lecture[lec]:
-            v.Start = 1.0 if (pp, rr) == (p, rid) else 0.0
+            v.Start = 1.0 if (p, rid) in target else 0.0
 
     m.Params.TimeLimit = bound_time_limit
     m.Params.Threads = workers
@@ -172,7 +169,7 @@ def _prove_or_bound(m: gp.Model, vars_by_lecture: Dict[Lecture, List[Tuple[int, 
 
     if m.SolCount > 0 and m.ObjVal < best_obj - 1e-6:
         best_obj = m.ObjVal
-        incumbent = _current_pr(vars_by_lecture, "X")
+        incumbent = _current_slots(vars_by_course, "X")
         if log_progress:
             print(f"[bound-check] unrestricted search found a better solution: {best_obj}")
     if log_progress:
@@ -181,30 +178,30 @@ def _prove_or_bound(m: gp.Model, vars_by_lecture: Dict[Lecture, List[Tuple[int, 
     return best_obj, incumbent, best_bound, proved_optimal
 
 
-def _harvest_ties(m: gp.Model, vars_by_lecture: Dict[Lecture, List[Tuple[int, str, gp.Var]]],
-                   lectures_by_course: Dict[str, List[Lecture]], neighborhood: str,
-                   adjacency: Dict[str, set], incumbent: Dict[Lecture, Tuple[int, str]],
+def _harvest_ties(m: gp.Model, vars_by_course: CourseVars,
+                   n_lectures: Dict[str, int], neighborhood: str,
+                   adjacency: Dict[str, set], incumbent: Incumbent,
                    best_obj: float, pool_solutions: int, pool_time_limit: float,
                    iter_time_limit: float, workers: int, rng: random.Random,
-                   log_progress: bool) -> List[Dict[Lecture, Tuple[int, str]]]:
+                   log_progress: bool) -> List[Incumbent]:
     """Harvests up to pool_solutions distinct full assignments tied exactly
     at best_obj, by running Gurobi's Solution Pool on a sequence of small
     subproblems instead of the whole model (see module docstring)."""
-    total_lectures = sum(len(lecs) for lecs in lectures_by_course.values())
+    total_lectures = sum(n_lectures.values())
     objective_expr = m.getObjective()
     tie_constr = m.addConstr(objective_expr == best_obj, name="pool_tie")
     m.Params.PoolSearchMode = 2
     m.Params.PoolGapAbs = 0.0
     m.Params.PoolSolutions = pool_solutions
 
-    solutions: List[Dict[Lecture, Tuple[int, str]]] = [dict(incumbent)]
+    solutions: List[Incumbent] = [dict(incumbent)]
     seen = {tuple(sorted(incumbent.items()))}
     t0 = time.time()
 
     while len(solutions) < pool_solutions and time.time() - t0 < pool_time_limit:
         target_count = max(1, round(0.15 * total_lectures))
-        free_lectures = _pick_free_lectures(lectures_by_course, target_count, neighborhood == "linked", rng, adjacency)
-        _apply_fixing(vars_by_lecture, free_lectures, incumbent)
+        free_courses = _pick_free_courses(n_lectures, target_count, neighborhood == "linked", rng, adjacency)
+        _apply_fixing(vars_by_course, free_courses, incumbent)
 
         remaining = pool_time_limit - (time.time() - t0)
         m.Params.TimeLimit = max(1.0, min(iter_time_limit, remaining))
@@ -216,7 +213,7 @@ def _harvest_ties(m: gp.Model, vars_by_lecture: Dict[Lecture, List[Tuple[int, st
             m.Params.SolutionNumber = i
             if abs(m.PoolObjVal - best_obj) > 1e-6:
                 continue
-            snap = _current_pr(vars_by_lecture, "Xn")
+            snap = _current_slots(vars_by_course, "Xn")
             key = tuple(sorted(snap.items()))
             if key not in seen:
                 seen.add(key)
@@ -232,19 +229,23 @@ def _harvest_ties(m: gp.Model, vars_by_lecture: Dict[Lecture, List[Tuple[int, st
     return solutions
 
 
-def _assignment_from_pr(problem: CTTProblem, pr: Dict[Lecture, Tuple[int, str]]) -> dict:
-    """Same JSON shape as ctt_solver_milp._extract_assignment, but built
-    from an in-memory (period, room) snapshot instead of live Gurobi
-    variables -- needed for harvested pool solutions, which are no longer
-    the model's current incumbent by the time we're done collecting them."""
+def _assignment_from_slots(problem: CTTProblem, incumbent: Incumbent) -> dict:
+    """Same JSON shape as ctt_solver_milp._extract_assignment (each course's
+    slots labeled lecture 0..n-1 in period order), but built from an
+    in-memory snapshot instead of live Gurobi variables -- needed because
+    neither the final incumbent nor harvested pool solutions are what the
+    model's .X holds by the time we're done (the harvest/bound-check phases
+    mutate it further, and the main loop's last iteration may not have been
+    the improving one)."""
     assignment = {}
-    for (cid, li), (p, rid) in pr.items():
-        assignment[f"{cid}#{li}"] = {
-            "day": p // problem.periods_per_day,
-            "period_in_day": p % problem.periods_per_day,
-            "period": p,
-            "room": rid,
-        }
+    for cid, slots in incumbent.items():
+        for li, (p, rid) in enumerate(slots):
+            assignment[f"{cid}#{li}"] = {
+                "day": p // problem.periods_per_day,
+                "period_in_day": p % problem.periods_per_day,
+                "period": p,
+                "room": rid,
+            }
     return assignment
 
 
@@ -265,11 +266,12 @@ def solve_fix_and_optimize(
     pool_time_limit: float = 0.0,
 ) -> dict:
     """Fix-and-optimize: build the full model once, then repeatedly fix all
-    but a random ~unfix_frac fraction of lectures to their incumbent
-    (period, room) and re-solve just that subproblem. Grows unfix_frac when
-    the search stalls (several iterations with no improvement), shrinks it
-    when a subproblem doesn't even finish exploring within iter_time_limit
-    -- the same two adaptation triggers Mikkelsen & Holm describe.
+    but a random ~unfix_frac fraction of lectures (grown course-by-course)
+    to their incumbent (period, room) slots and re-solve just that
+    subproblem. Grows unfix_frac when the search stalls (several iterations
+    with no improvement), shrinks it when a subproblem doesn't even finish
+    exploring within iter_time_limit -- the same two adaptation triggers
+    Mikkelsen & Holm describe.
 
     bound_time_limit > 0 and pool_solutions > 0 enable the two optional
     phases described in the module docstring (optimality proof/bound, and
@@ -280,32 +282,33 @@ def solve_fix_and_optimize(
     rng = random.Random(seed)
     t0 = time.time()
 
-    m, lectures, x, room_ids = build_model(
+    m, y, _ = build_model(
         problem, time_limit=iter_time_limit, workers=workers, mip_gap=0.0, log_progress=log_progress,
     )
+    m.Params.Seed = seed
 
-    lectures_by_course: Dict[str, List[Lecture]] = {}
-    for lec in lectures:
-        lectures_by_course.setdefault(lec[0], []).append(lec)
+    n_lectures = {cid: c.n_lectures for cid, c in problem.courses.items()}
     adjacency = _course_adjacency(problem) if neighborhood == "linked" else {}
 
-    vars_by_lecture: Dict[Lecture, List[Tuple[int, str, gp.Var]]] = {lec: [] for lec in lectures}
-    for (lec, p, rid), v in x.items():
-        vars_by_lecture[lec].append((p, rid, v))
+    vars_by_course: CourseVars = {cid: [] for cid in problem.courses}
+    for (cid, p, rid), v in y.items():
+        vars_by_course[cid].append((p, rid, v))
 
     # Initial feasible solution: solve the full (unfixed) model once.
     m.optimize()
     if m.SolCount == 0:
         return {
-            "status": "INFEASIBLE", "objective": None, "best_bound": None,
+            # no incumbent within iter_time_limit is not proof of infeasibility
+            "status": "INFEASIBLE" if m.Status in (GRB.INFEASIBLE, GRB.INF_OR_UNBD) else "UNKNOWN",
+            "objective": None, "best_bound": None,
             "solve_time": time.time() - t0, "n_iterations": 0, "assignment": {},
         }
-    incumbent = _current_pr(vars_by_lecture, "X")
+    incumbent = _current_slots(vars_by_course, "X")
     best_obj = m.ObjVal
     if log_progress:
         print(f"[fix-and-optimize] initial solution: objective={best_obj}")
 
-    total_lectures = len(lectures)
+    total_lectures = sum(n_lectures.values())
     unfix_frac = initial_unfix_frac
     stall = 0
     n_iter = 0
@@ -313,8 +316,8 @@ def solve_fix_and_optimize(
     while time.time() - t0 < time_limit:
         n_iter += 1
         target_count = max(1, round(unfix_frac * total_lectures))
-        free_lectures = _pick_free_lectures(lectures_by_course, target_count, neighborhood == "linked", rng, adjacency)
-        _apply_fixing(vars_by_lecture, free_lectures, incumbent)
+        free_courses = _pick_free_courses(n_lectures, target_count, neighborhood == "linked", rng, adjacency)
+        _apply_fixing(vars_by_course, free_courses, incumbent)
 
         remaining = time_limit - (time.time() - t0)
         m.Params.TimeLimit = max(1.0, min(iter_time_limit, remaining))
@@ -325,7 +328,7 @@ def solve_fix_and_optimize(
 
         if improved:
             best_obj = m.ObjVal
-            incumbent = _current_pr(vars_by_lecture, "X")
+            incumbent = _current_slots(vars_by_course, "X")
             stall = 0
         else:
             stall += 1
@@ -337,7 +340,8 @@ def solve_fix_and_optimize(
             stall = 0
 
         if log_progress:
-            print(f"[fix-and-optimize] iter={n_iter} free={len(free_lectures)}/{total_lectures} "
+            n_free = sum(n_lectures[cid] for cid in free_courses)
+            print(f"[fix-and-optimize] iter={n_iter} free={n_free}/{total_lectures} "
                   f"({unfix_frac:.2%}) improved={improved} best={best_obj} "
                   f"finished_subproblem={finished_subproblem}")
 
@@ -346,7 +350,7 @@ def solve_fix_and_optimize(
         if log_progress:
             print(f"[harvest] searching for up to {pool_solutions} solutions tied at {best_obj}")
         tied_solutions = _harvest_ties(
-            m, vars_by_lecture, lectures_by_course, neighborhood, adjacency, incumbent, best_obj,
+            m, vars_by_course, n_lectures, neighborhood, adjacency, incumbent, best_obj,
             pool_solutions, pool_time_limit, iter_time_limit, workers, rng, log_progress,
         )
 
@@ -355,7 +359,7 @@ def solve_fix_and_optimize(
     if bound_time_limit > 0:
         prev_best = best_obj
         best_obj, incumbent, best_bound, proved_optimal = _prove_or_bound(
-            m, vars_by_lecture, incumbent, best_obj, bound_time_limit, workers, log_progress,
+            m, vars_by_course, incumbent, best_obj, bound_time_limit, workers, log_progress,
         )
         if tied_solutions is not None and best_obj < prev_best - 1e-6:
             # the bound-check phase found something strictly better -- the
@@ -365,26 +369,17 @@ def solve_fix_and_optimize(
                 print("[harvest] discarding tied solutions: bound-check found a strictly better objective")
             tied_solutions = None
 
-    # The model's live .X may not currently reflect `incumbent` (the harvest/
-    # bound-check phases mutate it further, or the main loop's last iteration
-    # may not have been the improving one). Re-pin everything to the tracked
-    # best incumbent and re-solve (trivial: everything fixed) so
-    # _extract_assignment's .X read is guaranteed correct.
-    _apply_fixing(vars_by_lecture, set(), incumbent)
-    m.Params.TimeLimit = 1.0
-    m.optimize()
-
     result = {
         "status": "OPTIMAL" if proved_optimal else "FEASIBLE",
         "objective": best_obj,
         "best_bound": best_bound,  # None unless bound_time_limit > 0 -- see module docstring
         "solve_time": time.time() - t0,
         "n_iterations": n_iter,
-        "assignment": _extract_assignment(problem, lectures, x, "X"),
+        "assignment": _assignment_from_slots(problem, incumbent),
     }
     if tied_solutions is not None:
         result["n_solutions_found"] = len(tied_solutions)
-        result["solutions"] = [_assignment_from_pr(problem, pr) for pr in tied_solutions]
+        result["solutions"] = [_assignment_from_slots(problem, s) for s in tied_solutions]
     return result
 
 

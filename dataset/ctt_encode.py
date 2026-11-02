@@ -116,6 +116,9 @@ def encode_instance(problem: CTTProblem, solution: dict, max_days: int, max_peri
     period_label = np.zeros(n_lectures, dtype=np.int64)
     room_label = np.zeros(n_lectures, dtype=np.int64)
 
+    # pool files written before ctt_solver_milp.solve_pool() also returned "assignment"
+    assignment = solution["assignment"] if "assignment" in solution else solution["solutions"][0]
+
     for i, (cid, li) in enumerate(lectures):
         blocked = unavailable.get(cid, ())
         for p in range(problem.n_periods):
@@ -124,7 +127,7 @@ def encode_instance(problem: CTTProblem, solution: dict, max_days: int, max_peri
             day, slot = p // problem.periods_per_day, p % problem.periods_per_day
             period_candidate_mask[i, day * max_periods_per_day + slot] = True
 
-        entry = solution["assignment"][f"{cid}#{li}"]
+        entry = assignment[f"{cid}#{li}"]
         true_p = entry["period"]
         day, slot = true_p // problem.periods_per_day, true_p % problem.periods_per_day
         period_label[i] = day * max_periods_per_day + slot

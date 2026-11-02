@@ -191,7 +191,7 @@ def _generate_and_solve_one(task):
         return None
     if solver_name == "milp":
         from dataset.ctt_solver_milp import solve_pool  # gurobipy -- needs a license, see ctt_solver_milp.py
-        result = solve_pool(problem, time_limit=time_limit, workers=solver_workers, log_progress=False, pool_solutions=10)
+        result = solve_pool(problem, time_limit=time_limit, workers=solver_workers, log_progress=False, pool_solutions=1000)
     else:
         from dataset.ctt_solver import solve  # ortools CP-SAT
         result = solve(problem, time_limit=time_limit, workers=solver_workers, log_progress=False)
