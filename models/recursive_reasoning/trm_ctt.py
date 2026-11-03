@@ -464,6 +464,7 @@ class TRMCTTLossHead(nn.Module):
 
         with torch.no_grad():
             matched_target_period = _match_period_targets(period_prob, period_label, node_mask, course_index)
+        outputs = dict(outputs, matched_period_label=matched_target_period)  # for per-instance eval logging
 
         target_period_prob = period_prob.gather(-1, matched_target_period.unsqueeze(-1)).squeeze(-1)
         target_room_prob = room_prob.gather(-1, room_label.unsqueeze(-1)).squeeze(-1)

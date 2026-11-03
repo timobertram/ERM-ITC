@@ -10,19 +10,25 @@ each slot, but a slot only adopts it once its own `halted` flag fires.
 
 Also logs H1-H4/S1-S4 constraint violations for the model's own proposed
 assignment (dataset.ctt_solver), gated to log_every/eval_every since it's
-plain Python and re-parses the .ctt files.
+plain Python and re-parses the .ctt files. training.instance_log (a CSV
+path, overwritten at the start of each run) additionally records every eval
+instance's own results at every eval, for per-instance difficulty analysis
+(see dataset/ctt_difficulty.py).
 """
 import argparse
+import csv
 import importlib
+import os
 from pathlib import Path
 
 import numpy as np
 import torch
+import torch.nn.functional as F
 import wandb
 import yaml
 
 from dataset.ctt_dataset import expand_paths, load_batch
-from dataset.ctt_solver import solution_metrics
+from dataset.ctt_solver import instance_solution_metrics, solution_metrics
 
 
 def _log_metrics(prefix, line_prefix, loss, metrics, step, extra=""):
@@ -47,19 +53,88 @@ def _log_solution_metrics(prefix, sol_metrics, step):
     wandb.log({f"{prefix}/{k}": v for k, v in sol_metrics.items()}, step=step)
 
 
-def _run_eval(model, eval_batches, eval_ctt_paths, problem_cache, step):
+def _masked_mean(x, mask):
+    return (x * mask).sum(dim=1) / mask.sum(dim=1).clamp_min(1)
+
+
+def _instance_rows(set_name, step, batch, outputs, first_outputs, ctt_paths, problem_cache):
+    """One row per instance of an eval set (argmax decoding, as in
+    solution_metrics):
+
+      hard_violations, soft_objective, h1-h4   after the last ACT step.
+      hard_step1           hard violations after the first ACT step --
+                           compare with hard_violations to see whether
+                           recursion helps on this instance.
+      period_target_prob,  mean probability of the (Hungarian-matched)
+      room_target_prob     target per lecture -- data cartography's
+                           "confidence" when tracked over evals.
+      period_loss          mean -log period_target_prob.
+      period_el2n          mean L2 distance between the period distribution
+                           and the one-hot matched target (EL2N, Paul et
+                           al. 2021).
+      plausible_periods    mean exp(entropy) of the predicted period
+                           distribution: how many periods the model spreads
+                           over (compare ctt_difficulty's nn_plausible_periods).
+    """
+    mask = batch["node_mask"].float()
+    period_prob, room_prob = outputs["period_prob"], outputs["room_prob"]
+    matched = outputs["matched_period_label"]
+    target_period_prob = period_prob.gather(-1, matched.unsqueeze(-1)).squeeze(-1)
+    target_room_prob = room_prob.gather(-1, batch["room_label"].unsqueeze(-1)).squeeze(-1)
+    el2n = (period_prob - F.one_hot(matched, period_prob.shape[-1]).float()).norm(dim=-1)
+    entropy = -(period_prob * period_prob.clamp_min(1e-12).log()).sum(dim=-1)
+    per_lecture = dict(
+        period_target_prob=target_period_prob,
+        room_target_prob=target_room_prob,
+        period_loss=-target_period_prob.clamp_min(1e-8).log(),
+        period_el2n=el2n,
+        plausible_periods=entropy.exp(),
+    )
+    per_instance = {k: _masked_mean(v, mask).cpu().numpy() for k, v in per_lecture.items()}
+
+    final = instance_solution_metrics(period_prob, room_prob, ctt_paths, problem_cache)
+    first = instance_solution_metrics(first_outputs["period_prob"], first_outputs["room_prob"], ctt_paths, problem_cache)
+    n_lectures = batch["node_mask"].sum(dim=1).cpu().numpy()
+    rows = []
+    for row, ctt_path in enumerate(ctt_paths):
+        rows.append(dict(
+            set=set_name, step=step, instance=os.path.splitext(os.path.basename(ctt_path))[0],
+            n_lectures=int(n_lectures[row]),
+            **{k: final[row][k] for k in ("hard_violations", "h1", "h2", "h3a", "h3b", "h4", "soft_objective")},
+            hard_step1=first[row]["hard_violations"],
+            **{k: float(v[row]) for k, v in per_instance.items()},
+        ))
+    return rows
+
+
+def _append_csv(path, rows):
+    is_new = not os.path.exists(path)
+    with open(path, "a", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
+        if is_new:
+            writer.writeheader()
+        writer.writerows(rows)
+
+
+def _run_eval(model, eval_batches, eval_ctt_paths, problem_cache, step, instance_log=None):
     model.eval()
     with torch.no_grad():
         for name, eval_batch in eval_batches.items():
             carry = model.initial_carry(eval_batch)
             all_halted = False
+            first_outputs = None
             while not all_halted:
                 carry, loss, metrics, outputs, all_halted = model(carry, eval_batch)
+                first_outputs = first_outputs or outputs
             _log_metrics(name, f"  [{name} @ step {step}] ", loss, metrics, step)
             sol_metrics = solution_metrics(
                 outputs["period_prob"], outputs["room_prob"], eval_ctt_paths[name], problem_cache
             )
             _log_solution_metrics(name, sol_metrics, step)
+            if instance_log:
+                _append_csv(instance_log, _instance_rows(
+                    name, step, eval_batch, outputs, first_outputs, eval_ctt_paths[name], problem_cache
+                ))
     model.train()
 
 
@@ -107,6 +182,7 @@ def main():
         halt_max_prob=model_cfg["halt_max_prob"], forward_dtype=model_cfg["forward_dtype"],
     )
 
+    torch.manual_seed(train_cfg.get("seed", 0))  # weight init and ACT exploration; data order uses rng below
     with torch.device(device):
         model = LossHeadClass(ModelClass(model_config), collision_weight=train_cfg.get("collision_weight", 1.0))
     model.to(device)
@@ -125,6 +201,10 @@ def main():
         name: [p[: -len("_encoded.npz")] + ".ctt" for p in expand_paths(p_list)]
         for name, p_list in eval_sets.items()
     }
+    instance_log = train_cfg.get("instance_log")
+    if instance_log:
+        Path(instance_log).parent.mkdir(parents=True, exist_ok=True)
+        Path(instance_log).unlink(missing_ok=True)
 
     rng = np.random.default_rng(train_cfg.get("seed", 0))
     perm = rng.permutation(total_instances)
@@ -179,7 +259,7 @@ def main():
             _log_solution_metrics("train", sol_metrics, step)
 
         if eval_batches and eval_every and (step % eval_every == 0 or step == steps - 1):
-            _run_eval(model, eval_batches, eval_ctt_paths, problem_cache, step)
+            _run_eval(model, eval_batches, eval_ctt_paths, problem_cache, step, instance_log)
 
         if checkpoint_every and (step % checkpoint_every == 0 or step == steps - 1) and step > 0:
             _save_checkpoint(step)

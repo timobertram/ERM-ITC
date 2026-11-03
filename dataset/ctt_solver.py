@@ -399,18 +399,16 @@ def evaluate_assignment(problem: CTTProblem, period_of: Dict[Lecture, int], room
     )
 
 
-def solution_metrics(period_prob, room_prob, ctt_paths: List[str], problem_cache: dict) -> Dict[str, float]:
-    """Averages evaluate_assignment() over a mini-batch (argmax predictions).
-    ctt_paths[row] is the .ctt file that row belongs to; problem_cache
-    memoizes parsed problems across calls."""
+def instance_solution_metrics(period_prob, room_prob, ctt_paths: List[str], problem_cache: dict) -> List[dict]:
+    """evaluate_assignment() of each mini-batch row's argmax prediction, one
+    dict per row. ctt_paths[row] is the .ctt file that row belongs to;
+    problem_cache memoizes parsed problems across calls."""
     from dataset.ctt_encode import CANONICAL_MAX_PERIODS_PER_DAY
 
     pred_period = period_prob.argmax(dim=-1).detach().cpu().numpy()
     pred_room = room_prob.argmax(dim=-1).detach().cpu().numpy()
 
-    keys = ("h1", "h2", "h3a", "h3b", "h4", "hard_violations", "s1", "s2", "s3", "s4", "soft_objective")
-    totals = {k: 0.0 for k in keys}
-
+    results = []
     for row, ctt_path in enumerate(ctt_paths):
         if ctt_path not in problem_cache:
             problem = parse_ctt(ctt_path)
@@ -425,7 +423,15 @@ def solution_metrics(period_prob, room_prob, ctt_paths: List[str], problem_cache
             period_of[lec] = day * problem.periods_per_day + slot
             room_of[lec] = room_ids[int(pred_room[row, i])]
 
-        result = evaluate_assignment(problem, period_of, room_of)
+        results.append(evaluate_assignment(problem, period_of, room_of))
+    return results
+
+
+def solution_metrics(period_prob, room_prob, ctt_paths: List[str], problem_cache: dict) -> Dict[str, float]:
+    """Averages instance_solution_metrics() over a mini-batch."""
+    keys = ("h1", "h2", "h3a", "h3b", "h4", "hard_violations", "s1", "s2", "s3", "s4", "soft_objective")
+    totals = {k: 0.0 for k in keys}
+    for result in instance_solution_metrics(period_prob, room_prob, ctt_paths, problem_cache):
         for k in keys:
             totals[k] += result[k]
 
