@@ -1,10 +1,3 @@
-"""Generates synthetic CB-CTT instances (same CTTProblem/.ctt format as the
-real data).
-
-Cheap necessary-condition checks reject obviously-infeasible instances
-before calling the solver; dataset.ctt_solver is the final feasibility
-oracle.
-"""
 from dataclasses import dataclass
 from typing import List
 
@@ -17,25 +10,25 @@ from dataset.ctt_parser import (
 
 @dataclass
 class SizeRange:
+    """Parameter ranges for one instance size."""
     n_days: List[int]
     periods_per_day: List[int]
     n_courses: range
     n_rooms: range
-    curricula_per_course: tuple      # (min, max) ratio of n_curricula to n_courses
-    curriculum_size: range          # courses per curriculum
-    lectures_per_course: List[int]  # sampled with replacement
+    curricula_per_course: tuple
+    curriculum_size: range
+    lectures_per_course: List[int]
     n_students: range
     room_capacity: range
-    unavailability_frac: tuple       # (min, max) fraction of a course's periods blocked
+    unavailability_frac: tuple
 
 
-# Roughly calibrated against comp01-21's real stats.
 SMALL = SizeRange(
     n_days=[5, 5, 5, 6], periods_per_day=[5, 5, 5, 6],
     n_courses=range(4, 11), n_rooms=range(2, 5),
     curricula_per_course=(0.5, 1.2),
     curriculum_size=range(1, 4),
-    lectures_per_course=[2, 3, 3, 3, 4, 5],
+    lectures_per_course=[2, 3, 3, 3, 4, 5, 7],
     n_students=range(10, 60), room_capacity=range(20, 100),
     unavailability_frac=(0.0, 0.15),
 )
@@ -45,18 +38,17 @@ MEDIUM = SizeRange(
     n_courses=range(20, 60), n_rooms=range(6, 14),
     curricula_per_course=(0.5, 1.2),
     curriculum_size=range(1, 5),
-    lectures_per_course=[2, 3, 3, 3, 3, 4, 5, 6],
+    lectures_per_course=[2, 3, 3, 3, 3, 4, 5, 6, 7, 8, 9],
     n_students=range(15, 120), room_capacity=range(20, 150),
     unavailability_frac=(0.05, 0.30),
 )
 
-# extends room_capacity/n_students to real comp01-21's actual range (up to 450/440)
 LARGE = SizeRange(
     n_days=[5, 5, 5, 6], periods_per_day=[5, 5, 6, 6, 9],
     n_courses=range(50, 140), n_rooms=range(10, 21),
     curricula_per_course=(0.5, 1.2),
     curriculum_size=range(1, 6),
-    lectures_per_course=[2, 3, 3, 3, 3, 4, 5, 6],
+    lectures_per_course=[2, 3, 3, 3, 3, 4, 5, 6, 7, 8, 9],
     n_students=range(10, 320), room_capacity=range(30, 460),
     unavailability_frac=(0.1, 0.35),
 )
@@ -65,8 +57,7 @@ SIZES = {"small": SMALL, "medium": MEDIUM, "large": LARGE}
 
 
 def _feasible_necessary_conditions(problem: CTTProblem) -> bool:
-    """Checks for H1/H3a/H3b (all AllDifferent-over-periods,
-    so exact and free). """
+    """Cheap checks that rule out obviously infeasible instances."""
     n_periods = problem.n_periods
     unavailable_count = {cid: 0 for cid in problem.courses}
     for u in problem.unavailability:
@@ -74,17 +65,17 @@ def _feasible_necessary_conditions(problem: CTTProblem) -> bool:
 
     for cid, c in problem.courses.items():
         if n_periods - unavailable_count[cid] < c.n_lectures:
-            return False  # H1
+            return False
 
     for q in problem.curricula.values():
         if sum(problem.courses[cid].n_lectures for cid in q.course_ids) > n_periods:
-            return False  # H3a
+            return False
 
     teacher_lectures: dict = {}
     for c in problem.courses.values():
         teacher_lectures[c.teacher_id] = teacher_lectures.get(c.teacher_id, 0) + c.n_lectures
     if any(total > n_periods for total in teacher_lectures.values()):
-        return False  # H3b
+        return False
 
     total_lecture_demand = sum(c.n_lectures for c in problem.courses.values())
     total_room_period_supply = len(problem.rooms) * n_periods
@@ -92,6 +83,7 @@ def _feasible_necessary_conditions(problem: CTTProblem) -> bool:
 
 
 def generate_problem(rng: np.random.Generator, name: str, size: SizeRange, max_attempts: int = 20) -> CTTProblem:
+    """Sample a random instance; retries until the necessary conditions hold."""
     for _attempt in range(max_attempts):
         n_days = int(rng.choice(size.n_days))
         periods_per_day = int(rng.choice(size.periods_per_day))
@@ -99,7 +91,7 @@ def generate_problem(rng: np.random.Generator, name: str, size: SizeRange, max_a
 
         n_courses = int(rng.choice(size.n_courses))
         n_rooms = int(rng.choice(size.n_rooms))
-        n_teachers = max(1, int(n_courses * rng.uniform(0.5, 0.85)))  # some teachers teach >1 course
+        n_teachers = max(1, int(n_courses * rng.uniform(0.5, 0.85)))
 
         course_ids = [f"c{i}" for i in range(n_courses)]
         courses = {}
@@ -109,7 +101,6 @@ def generate_problem(rng: np.random.Generator, name: str, size: SizeRange, max_a
                 id=cid,
                 teacher_id=f"t{int(rng.integers(0, n_teachers))}",
                 n_lectures=n_lectures,
-                # must not exceed n_lectures, else S2's shortfall is unavoidable
                 min_working_days=int(rng.integers(1, min(n_lectures, n_days) + 1)),
                 n_students=int(rng.choice(size.n_students)),
             )
@@ -119,7 +110,6 @@ def generate_problem(rng: np.random.Generator, name: str, size: SizeRange, max_a
             for i in range(n_rooms)
         }
 
-        # scaled relative to n_courses (real ratio is 0.43-2.57, median 0.72)
         lo, hi = size.curricula_per_course
         n_curricula = max(1, int(rng.integers(max(1, round(lo * n_courses)), round(hi * n_courses) + 2)))
         curricula = {}
@@ -151,6 +141,7 @@ def generate_problem(rng: np.random.Generator, name: str, size: SizeRange, max_a
 
 
 def write_ctt(problem: CTTProblem, path: str) -> None:
+    """Write a CTTProblem in ITC2007 .ctt format."""
     lines = [
         f"Name: {problem.name}",
         f"Courses: {len(problem.courses)}",
@@ -180,9 +171,7 @@ def write_ctt(problem: CTTProblem, path: str) -> None:
 
 
 def _generate_and_solve_one(task):
-    """Picklable worker for parallel generation: each call seeds its own rng,
-    generates one instance, solves it. Returns None on infeasible/unsolved
-    (including generate_problem giving up on its feasibility pre-checks)."""
+    """Generate one instance and solve it with CP-SAT; None if rejected."""
     seed, name, size, time_limit, solver_workers = task
     rng = np.random.default_rng(seed)
     try:
@@ -213,9 +202,8 @@ if __name__ == "__main__":
     cli.add_argument("--out-dir", default="data/ITC2007/synth")
     cli.add_argument("--time-limit", type=float, default=20.0)
     cli.add_argument("--prefix", default="gen")
-    cli.add_argument("--jobs", type=int, default=1, help="parallel instance-solves in flight at once")
-    cli.add_argument("--solver-workers", type=int, default=8,
-                      help="OR-tools search workers per instance -- lower when --jobs > 1")
+    cli.add_argument("--jobs", type=int, default=1)
+    cli.add_argument("--solver-workers", type=int, default=8)
     args = cli.parse_args()
 
     os.makedirs(args.out_dir, exist_ok=True)
@@ -223,20 +211,21 @@ if __name__ == "__main__":
     name_width = max(3, len(str(args.count - 1)))
 
     def _write_result(name, problem, result):
+        """Write .ctt and solution, check the round trip."""
         ctt_path = os.path.join(args.out_dir, f"{name}.ctt")
         with open(os.path.join(args.out_dir, f"{name}_solution.json"), "w") as f:
             json.dump(result, f, indent=2)
         write_ctt(problem, ctt_path)
-        # round-trip check: re-parsing our own .ctt must reproduce the same problem
         reparsed = parse_ctt(ctt_path)
         assert reparsed == problem, f"round-trip mismatch for {name}: {reparsed} != {problem}"
 
     n_written = n_rejected = 0
     with ProcessPoolExecutor(max_workers=args.jobs) as pool, tqdm(total=args.count, unit="instance") as pbar:
         in_flight = {}
-        seed_box = [args.seed]  # mutable cell -- module-level code has no function scope for `nonlocal`
+        seed_box = [args.seed]
 
         def _submit_next():
+            """Queue the next instance."""
             name = f"{args.prefix}{(n_written + len(in_flight)):0{name_width}d}"
             fut = pool.submit(_generate_and_solve_one, (seed_box[0], name, size, args.time_limit, args.solver_workers))
             in_flight[fut] = name

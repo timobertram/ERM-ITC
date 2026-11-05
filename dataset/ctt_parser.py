@@ -1,42 +1,10 @@
-"""Parser for ITC2007 Track 3 (Curriculum-Based Course Timetabling) .ctt files.
-
-Format (see comp01.ctt for a concrete example):
-
-    Name: <name>
-    Courses: <n>
-    Rooms: <n>
-    Days: <n>
-    Periods_per_day: <n>
-    Curricula: <n>
-    Constraints: <n>
-
-    COURSES:
-    <course_id> <teacher_id> <n_lectures> <min_working_days> <n_students>
-    ...
-
-    ROOMS:
-    <room_id> <capacity>
-    ...
-
-    CURRICULA:
-    <curriculum_id> <n_courses> <course_id_1> ... <course_id_n>
-    ...
-
-    UNAVAILABILITY_CONSTRAINTS:
-    <course_id> <day> <period>
-    ...
-
-    END.
-
-Spec reference: docs/itc2007.pdf in https://github.com/Docheinstein/itc2007-cct
-(mirrors the official ITC2007 Track 3 problem description).
-"""
 from dataclasses import dataclass, field
 from typing import Dict, List
 
 
 @dataclass
 class Course:
+    """Course with lecture count, teacher, min working days and students."""
     id: str
     teacher_id: str
     n_lectures: int
@@ -46,18 +14,21 @@ class Course:
 
 @dataclass
 class Room:
+    """Room and its capacity."""
     id: str
     capacity: int
 
 
 @dataclass
 class Curriculum:
+    """Curriculum: courses that must not overlap."""
     id: str
     course_ids: List[str]
 
 
 @dataclass
 class UnavailabilityConstraint:
+    """Course unavailable at (day, period)."""
     course_id: str
     day: int
     period: int
@@ -65,6 +36,7 @@ class UnavailabilityConstraint:
 
 @dataclass
 class CTTProblem:
+    """One ITC2007 instance."""
     name: str
     n_days: int
     periods_per_day: int
@@ -75,10 +47,12 @@ class CTTProblem:
 
     @property
     def n_periods(self) -> int:
+        """Days times periods per day."""
         return self.n_days * self.periods_per_day
 
 
 def parse_ctt(path: str) -> CTTProblem:
+    """Parse an ITC2007 .ctt file."""
     with open(path) as f:
         lines = [line.strip() for line in f if line.strip()]
 
@@ -94,7 +68,6 @@ def parse_ctt(path: str) -> CTTProblem:
         n_days=int(header["Days"]),
         periods_per_day=int(header["Periods_per_day"]),
     )
-    n_constraints = int(header["Constraints"])
 
     section = None
     for line in lines[i:]:
@@ -113,32 +86,10 @@ def parse_ctt(path: str) -> CTTProblem:
             problem.rooms[rid] = Room(rid, int(capacity))
         elif section == "CURRICULA":
             qid, n_courses = parts[0], int(parts[1])
-            course_ids = parts[2:2 + n_courses]
-            problem.curricula[qid] = Curriculum(qid, course_ids)
+            problem.curricula[qid] = Curriculum(qid, parts[2:2 + n_courses])
         elif section == "UNAVAILABILITY_CONSTRAINTS":
             cid, day, period = parts
             problem.unavailability.append(UnavailabilityConstraint(cid, int(day), int(period)))
 
-    assert len(problem.unavailability) == n_constraints, (
-        f"expected {n_constraints} unavailability constraints, parsed {len(problem.unavailability)}"
-    )
+    assert len(problem.unavailability) == int(header["Constraints"])
     return problem
-
-
-def summarize(problem: CTTProblem) -> str:
-    n_lectures_total = sum(c.n_lectures for c in problem.courses.values())
-    curricula_sizes = [len(q.course_ids) for q in problem.curricula.values()]
-    return "\n".join([
-        f"problem: {problem.name}  ({problem.n_days} days x {problem.periods_per_day} periods/day "
-        f"= {problem.n_periods} periods)",
-        f"courses: {len(problem.courses)}  (total lectures: {n_lectures_total})",
-        f"rooms: {len(problem.rooms)}",
-        f"curricula: {len(problem.curricula)}  (size min={min(curricula_sizes)} max={max(curricula_sizes)})",
-        f"unavailability constraints: {len(problem.unavailability)}",
-    ])
-
-
-if __name__ == "__main__":
-    import sys
-    path = sys.argv[1] if len(sys.argv) > 1 else "data/ITC2007/real/comp01.ctt"
-    print(summarize(parse_ctt(path)))

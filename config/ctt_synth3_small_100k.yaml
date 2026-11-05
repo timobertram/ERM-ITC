@@ -1,0 +1,44 @@
+data:
+  lecture_tag: none
+  paths:
+    - "data/ITC2007/synth_3/gen[0-8][0-9][0-9][0-9]_encoded.npz"
+    - "data/ITC2007/synth_3/gen9[0-8][0-9][0-9]_encoded.npz"
+  eval:
+    heldout_small: ["data/ITC2007/synth_3/gen99[0-9][0-9]_encoded.npz"]
+    heldout_medium: ["data/ITC2007/synth_3/mid99[0-9][0-9]_encoded.npz"]
+
+training:
+  project: ctt
+  run_name: synth3-small-100k
+  device: cuda
+  seed: 0
+  batch_size: 64
+  steps: 100000
+  lr: 1.0e-4
+  lr_min: 1.0e-5
+  grad_clip: 1.0
+  objectives:
+    h1: {enabled: true, weight: 100.0, start: 0, ramp: 0}
+    h2: {enabled: true, weight: 100.0, start: 0, ramp: 0}
+    h3a: {enabled: true, weight: 100.0, start: 0, ramp: 0}
+    h3b: {enabled: true, weight: 100.0, start: 0, ramp: 0}
+    s1: {enabled: true, weight: 1.0, start: 0, ramp: 0}
+    s2: {enabled: true, weight: 5.0, start: 0, ramp: 0}
+    s3: {enabled: true, weight: 2.0, start: 0, ramp: 0}
+    s4: {enabled: true, weight: 1.0, start: 0, ramp: 0}
+  log_every: 10
+  eval_every: 500
+  checkpoint: outputs/checkpoints/ctt_synth3_small_100k.pt
+  best_metric: [heldout_small/hard_violations]
+  checkpoint_every: 500
+
+model:
+  hidden_size: 256
+  expansion: 4.0
+  num_heads: 4
+  head_dim: 64
+  l_layers: 2
+  h_cycles: 2
+  l_cycles: 2
+  sup_steps: 16
+  logit_scale: 4.0

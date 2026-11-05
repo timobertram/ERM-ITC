@@ -1,0 +1,47 @@
+data:
+  lecture_tag: none
+  paths:
+    - "data/ITC2007/synth_3/*[0-8][0-9][0-9][0-9]_encoded.npz"
+    - "data/ITC2007/synth_3/*9[0-8][0-9][0-9]_encoded.npz"
+  eval:
+    heldout_small: ["data/ITC2007/synth_3/gen99[0-9][0-9]_encoded.npz"]
+    heldout_medium: ["data/ITC2007/synth_3/mid99[0-9][0-9]_encoded.npz"]
+    heldout_large: ["data/ITC2007/synth_3/lar99[0-9][0-9]_encoded.npz"]
+    real: ["data/ITC2007/real/comp*_encoded.npz"]
+
+training:
+  project: ctt
+  run_name: synth3-all-h512
+  device: cuda
+  seed: 0
+  batch_size: 64
+  steps: 25000
+  lr: 1.0e-4
+  lr_min: 1.0e-5
+  grad_clip: 1.0
+  objectives:
+    h1: {enabled: true, weight: 100.0, start: 0, ramp: 0}
+    h2: {enabled: true, weight: 100.0, start: 0, ramp: 0}
+    h3a: {enabled: true, weight: 100.0, start: 0, ramp: 0}
+    h3b: {enabled: true, weight: 100.0, start: 0, ramp: 0}
+    s1: {enabled: true, weight: 1.0, start: 0, ramp: 0}
+    s2: {enabled: true, weight: 5.0, start: 0, ramp: 0}
+    s3: {enabled: true, weight: 2.0, start: 0, ramp: 0}
+    s4: {enabled: true, weight: 1.0, start: 0, ramp: 0}
+  log_every: 10
+  eval_every: 250
+  checkpoint: outputs/checkpoints/ctt_synth3_all_h512.pt
+  best_metric: [heldout_small/h1, heldout_small/h2, heldout_medium/h1, heldout_medium/h2, heldout_large/h1, heldout_large/h2,
+                heldout_small/h3a, heldout_small/h3b, heldout_medium/h3a, heldout_medium/h3b, heldout_large/h3a, heldout_large/h3b]
+  checkpoint_every: 500
+
+model:
+  hidden_size: 512
+  expansion: 4.0
+  num_heads: 8
+  head_dim: 64
+  l_layers: 2
+  h_cycles: 2
+  l_cycles: 2
+  sup_steps: 16
+  logit_scale: 4.0

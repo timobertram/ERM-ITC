@@ -1,0 +1,42 @@
+data:
+  lecture_tag: course
+  paths:
+    - "data/ITC2007/synth/*[0-8][0-9][0-9]_encoded.npz"
+    - "data/ITC2007/synth/*9[0-8][0-9]_encoded.npz"
+  eval:
+    synth_heldout: ["data/ITC2007/synth/*99[0-9]_encoded.npz"]
+    real: ["data/ITC2007/real/comp*_encoded.npz"]
+
+training:
+  project: ctt
+  run_name: synth-h1-only-lr1e-4
+  device: cuda
+  seed: 0
+  batch_size: 64
+  steps: 10000
+  lr: 1.0e-4
+  grad_clip: 1.0
+  objectives:
+    h1: {enabled: true, weight: 100.0, start: 0, ramp: 0}
+    h2: {enabled: false, weight: 100.0, start: 0, ramp: 0}
+    h3a: {enabled: false, weight: 100.0, start: 0, ramp: 0}
+    h3b: {enabled: false, weight: 100.0, start: 0, ramp: 0}
+    s1: {enabled: false, weight: 1.0, start: 0, ramp: 0}
+    s2: {enabled: false, weight: 5.0, start: 0, ramp: 0}
+    s3: {enabled: false, weight: 2.0, start: 0, ramp: 0}
+    s4: {enabled: false, weight: 1.0, start: 0, ramp: 0}
+  log_every: 10
+  eval_every: 100
+  checkpoint: outputs/checkpoints/ctt_synth_h1_lr1e-4.pt
+  checkpoint_every: 500
+
+model:
+  hidden_size: 256
+  expansion: 4.0
+  num_heads: 4
+  head_dim: 64
+  l_layers: 2
+  h_cycles: 2
+  l_cycles: 2
+  sup_steps: 16
+  logit_scale: 4.0

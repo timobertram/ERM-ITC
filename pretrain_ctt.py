@@ -1,19 +1,5 @@
-"""Config-driven training loop for models in models/recursive_reasoning/.
-
-See config/ctt.yaml for the full set of knobs (data paths, wandb project/run
-name, held-out eval sets, checkpointing, model hyperparameters, and which
-model class to train -- model.module/class_name/loss_head_class_name).
-
-A fixed number of persistent ACT "slots" (training.batch_size), each with
-its own carry. Every step, a fresh random candidate instance is offered to
-each slot, but a slot only adopts it once its own `halted` flag fires.
-
-Also logs H1-H4/S1-S4 constraint violations for the model's own proposed
-assignment (dataset.ctt_solver), gated to log_every/eval_every since it's
-plain Python and re-parses the .ctt files.
-"""
 import argparse
-import importlib
+from dataclasses import asdict
 from pathlib import Path
 
 import numpy as np
@@ -21,170 +7,174 @@ import torch
 import wandb
 import yaml
 
-from dataset.ctt_dataset import expand_paths, load_batch
-from dataset.ctt_solver import solution_metrics
+from dataset.ctt_dataset import collate, expand_paths, load_examples
+from dataset.ctt_encode import MAX_PERIODS_PER_DAY
+from dataset.ctt_parser import parse_ctt
+from dataset.ctt_solver import evaluate_assignment
+from models.recursive_reasoning.trm_ctt import TRMCTT, TRMCTTConfig, constraint_loss
+
+_problems = {}
 
 
-def _log_metrics(prefix, line_prefix, loss, metrics, step, extra=""):
-    print(f"{line_prefix}loss={loss.item():.4f}  "
-          f"period_set_acc={metrics['period_set_accuracy'].item():.4f}  "
-          f"room_acc={metrics['room_accuracy'].item():.4f}  "
-          f"exact_acc={metrics['exact_accuracy'].item():.4f}{extra}")
-    wandb.log({
-        f"{prefix}/loss": loss.item(),
-        f"{prefix}/period_set_accuracy": metrics["period_set_accuracy"].item(),
-        f"{prefix}/room_accuracy": metrics["room_accuracy"].item(),
-        f"{prefix}/exact_accuracy": metrics["exact_accuracy"].item(),
-    }, step=step)
+def solution_metrics(logits, n_rooms, ctt_paths):
+    """Evaluator metrics of the argmax assignment, averaged over instances."""
+    periods, rooms = np.divmod(logits.argmax(-1).cpu().numpy(), n_rooms)
+    totals = {}
+    for row, path in enumerate(ctt_paths):
+        if path not in _problems:
+            _problems[path] = parse_ctt(path)
+        problem = _problems[path]
+        room_ids = list(problem.rooms)
+        lectures = [(cid, li) for cid, c in problem.courses.items() for li in range(c.n_lectures)]
+        period_of, room_of = {}, {}
+        for i, lec in enumerate(lectures):
+            day, slot = divmod(int(periods[row, i]), MAX_PERIODS_PER_DAY)
+            period_of[lec] = day * problem.periods_per_day + slot
+            room_of[lec] = room_ids[rooms[row, i]]
+        sol = evaluate_assignment(problem, period_of, room_of)
+        sol["feasible"] = int(sol["hard_violations"] == 0)
+        for k, v in sol.items():
+            totals[k] = totals.get(k, 0) + v / len(ctt_paths)
+    return totals
 
 
-def _log_solution_metrics(prefix, sol_metrics, step):
-    print(f"  [{prefix} solution] hard_violations={sol_metrics['hard_violations']:.2f} "
-          f"(h1={sol_metrics['h1']:.2f} h2={sol_metrics['h2']:.2f} h3a={sol_metrics['h3a']:.2f} "
-          f"h3b={sol_metrics['h3b']:.2f} h4={sol_metrics['h4']:.2f})  "
-          f"soft_objective={sol_metrics['soft_objective']:.2f} "
-          f"(s1={sol_metrics['s1']:.2f} s2={sol_metrics['s2']:.2f} s3={sol_metrics['s3']:.2f} s4={sol_metrics['s4']:.2f})")
-    wandb.log({f"{prefix}/{k}": v for k, v in sol_metrics.items()}, step=step)
+def log(prefix, step, loss, terms, sol, **extra):
+    """Print and log to wandb."""
+    print(f"[{prefix} {step:5d}] loss={loss:.4f}  hard={sol['hard_violations']:.2f}  soft={sol['soft_objective']:.1f}")
+    wandb.log({f"{prefix}/loss": loss,
+               **{f"{prefix}/loss_{k}": v.item() for k, v in terms.items()},
+               **{f"{prefix}/{k}": v for k, v in sol.items()},
+               **{f"{prefix}/{k}": v for k, v in extra.items()}}, step=step)
 
 
-def _run_eval(model, eval_batches, eval_ctt_paths, problem_cache, step):
-    model.eval()
-    with torch.no_grad():
-        for name, eval_batch in eval_batches.items():
-            carry = model.initial_carry(eval_batch)
-            all_halted = False
-            while not all_halted:
-                carry, loss, metrics, outputs, all_halted = model(carry, eval_batch)
-            _log_metrics(name, f"  [{name} @ step {step}] ", loss, metrics, step)
-            sol_metrics = solution_metrics(
-                outputs["period_prob"], outputs["room_prob"], eval_ctt_paths[name], problem_cache
-            )
-            _log_solution_metrics(name, sol_metrics, step)
-    model.train()
+def objective_weights(objectives, step=None):
+    """Loss weights at step after start/ramp; full weights if step is None."""
+    weights = {}
+    for k, o in objectives.items():
+        t = 0 if step is None else step - o.get("start", 0)
+        if not o.get("enabled", True) or t < 0:
+            continue
+        ramp = 0 if step is None else o.get("ramp", 0)
+        weights[k] = o["weight"] * (min(1.0, (t + 1) / ramp) if ramp else 1.0)
+    return weights
 
 
 def main():
+    """Train with deep supervision and periodic eval/checkpointing."""
     cli = argparse.ArgumentParser()
-    cli.add_argument("npz_paths", nargs="*", default=None, help="overrides the config file's data.paths if given")
     cli.add_argument("--config", default="config/ctt.yaml")
-    args = cli.parse_args()
+    cfg = yaml.safe_load(open(cli.parse_args().config))
+    tc = cfg["training"]
 
-    with open(args.config) as f:
-        cfg = yaml.safe_load(f)
-    data_cfg, train_cfg, model_cfg = cfg["data"], cfg["training"], cfg["model"]
+    torch.manual_seed(tc["seed"])
+    rng = np.random.default_rng(tc["seed"])
+    device = torch.device(tc["device"])
+    wandb.init(project=tc["project"], name=tc.get("run_name"), config=cfg)
 
-    model_module = importlib.import_module(f"models.recursive_reasoning.{model_cfg['module']}")
-    ModelClass = getattr(model_module, model_cfg["class_name"])
-    LossHeadClass = getattr(model_module, model_cfg["loss_head_class_name"])
+    def to_ctt(paths):
+        """Encoded .npz paths -> .ctt paths."""
+        return [p.removesuffix("_encoded.npz") + ".ctt" for p in paths]
 
-    wandb.init(
-        project=train_cfg.get("project_name") or "ctt",
-        name=train_cfg.get("run_name"),
-        config=cfg,
-        settings=wandb.Settings(_disable_stats=True),
+    def to_device(batch):
+        """Move a batch to the device."""
+        return {k: v.to(device) for k, v in batch.items()}
+
+    paths = expand_paths(cfg["data"]["paths"])
+    examples, ctt_paths = load_examples(paths), to_ctt(paths)
+    lecture_tag = cfg["data"].get("lecture_tag", "course")
+    eval_rng = np.random.default_rng([tc["seed"], 1])
+    evals = {}
+    for name, patterns in cfg["data"].get("eval", {}).items():
+        eval_paths = expand_paths(patterns)
+        evals[name] = to_device(collate(load_examples(eval_paths), eval_rng, lecture_tag)), to_ctt(eval_paths)
+
+    config = TRMCTTConfig(
+        lecture_dim=examples[0]["lecture_features"].shape[-1],
+        room_dim=examples[0]["room_features"].shape[-1],
+        period_vocab=examples[0]["period_mask"].shape[-1],
+        **cfg["model"],
     )
+    model = TRMCTT(config).to(device)
+    if tc.get("init_from"):
+        model.load_state_dict(torch.load(tc["init_from"], map_location=device)["state_dict"])
+    opt = torch.optim.AdamW(model.parameters(), lr=tc["lr"], weight_decay=0.0)
+    sched = (torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=tc["steps"], eta_min=tc["lr_min"])
+             if tc.get("lr_min") is not None else None)
+    objectives = tc["objectives"]
+    for k, o in objectives.items():
+        if unknown := set(o) - {"enabled", "weight", "start", "ramp"}:
+            raise ValueError(f"unknown keys for objective {k}: {unknown}")
+    if not objective_weights(objectives, 0):
+        raise ValueError("no objective active at step 0")
+    loss_fn = lambda logits, b, w: constraint_loss(model.assign(logits), b, w)
 
-    paths = args.npz_paths or data_cfg["paths"]
-    device = torch.device(train_cfg.get("device") or ("cuda" if torch.cuda.is_available() else "cpu"))
-    full_batch = {k: v.to(device) for k, v in load_batch(paths).items()}
-    total_instances = full_batch["lecture_course_features"].shape[0]
-    batch_size = train_cfg.get("batch_size") or total_instances
+    def save(step, suffix=""):
+        """Save checkpoint, optionally with a suffix (_best, _feasible)."""
+        if tc.get("checkpoint"):
+            path = Path(tc["checkpoint"])
+            path.parent.mkdir(parents=True, exist_ok=True)
+            torch.save({"config": asdict(config), "state_dict": model.state_dict(), "step": step},
+                       path.with_stem(path.stem + suffix))
 
-    # maps each full_batch row to its source .ctt file, for solution_metrics
-    instance_ctt_paths = [p[: -len("_encoded.npz")] + ".ctt" for p in expand_paths(paths)]
-    problem_cache: dict = {}
+    @torch.no_grad()
+    def evaluate(step):
+        """Run all eval sets and return their metrics."""
+        model.eval()
+        metrics = {}
+        for name, (batch, paths) in evals.items():
+            z = model.init_z(batch)
+            for _ in range(config.sup_steps):
+                z, p = model(z, batch)
+            loss, terms = loss_fn(p, batch, objective_weights(objectives))
+            sol = solution_metrics(p, batch["room_mask"].shape[1], paths)
+            log(name, step, loss.item(), terms, sol)
+            metrics.update({f"{name}/{k}": v for k, v in sol.items()})
+        model.train()
+        return metrics
 
-    model_config = dict(
-        hidden_size=model_cfg["hidden_size"], expansion=model_cfg["expansion"],
-        num_heads=model_cfg["num_heads"], head_dim=model_cfg["head_dim"],
-        course_feature_dim=full_batch["lecture_course_features"].shape[-1],
-        random_id_dim=full_batch["lecture_random_id"].shape[-1],
-        group_tag_dim=full_batch["lecture_group_tag"].shape[-1],
-        room_random_id_dim=full_batch["room_random_id"].shape[-1],
-        period_vocab_size=full_batch["period_candidate_mask"].shape[-1],
-        L_layers=model_cfg["l_layers"], H_cycles=model_cfg["h_cycles"], L_cycles=model_cfg["l_cycles"],
-        halt_max_steps=model_cfg["halt_max_steps"], halt_exploration_prob=model_cfg["halt_exploration_prob"],
-        halt_max_prob=model_cfg["halt_max_prob"], forward_dtype=model_cfg["forward_dtype"],
-    )
+    best = float("inf")
+    best_feasible = 0
 
-    with torch.device(device):
-        model = LossHeadClass(ModelClass(model_config), collision_weight=train_cfg.get("collision_weight", 1.0))
-    model.to(device)
+    n = len(examples)
+    bs = tc.get("batch_size") or n
+    order, ptr = rng.permutation(n), 0
+    for step in range(tc["steps"]):
+        if step % config.sup_steps == 0:
+            if ptr + bs > n:
+                order, ptr = rng.permutation(n), 0
+            idx = order[ptr:ptr + bs]
+            ptr += bs
+            batch = to_device(collate([examples[i] for i in idx], rng, lecture_tag))
+            z = model.init_z(batch)
 
-    optimizer = torch.optim.AdamW(model.parameters(), lr=train_cfg["lr"], weight_decay=0.0)
-
-    # named held-out eval sets, all checked at the same cadence; eval_paths
-    # (singular, unnamed) is a shortcut for one set named "held-out"
-    eval_every = train_cfg.get("eval_every")
-    eval_sets = {}
-    if train_cfg.get("eval_paths"):
-        eval_sets["held-out"] = train_cfg["eval_paths"]
-    eval_sets.update(train_cfg.get("eval_sets") or {})
-    eval_batches = {name: {k: v.to(device) for k, v in load_batch(p).items()} for name, p in eval_sets.items()}
-    eval_ctt_paths = {
-        name: [p[: -len("_encoded.npz")] + ".ctt" for p in expand_paths(p_list)]
-        for name, p_list in eval_sets.items()
-    }
-
-    rng = np.random.default_rng(train_cfg.get("seed", 0))
-    perm = rng.permutation(total_instances)
-    ptr = 0
-    candidate_idx = None
-
-    def _next_candidate_batch():
-        nonlocal perm, ptr, candidate_idx
-        if ptr + batch_size > len(perm):
-            perm = rng.permutation(total_instances)
-            ptr = 0
-        idx = perm[ptr:ptr + batch_size]
-        ptr += batch_size
-        candidate_idx = idx
-        idx_t = torch.tensor(idx.tolist(), device=device, dtype=torch.long)
-        return {k: v[idx_t] for k, v in full_batch.items()}
-
-    carry = model.initial_carry(_next_candidate_batch())
-    current_row_idx = np.zeros(batch_size, dtype=np.int64)  # which full_batch row each slot currently holds
-    print(f"training on {total_instances} instances, {batch_size} persistent ACT slots per step")
-
-    checkpoint_path = train_cfg.get("checkpoint_path")
-    checkpoint_every = train_cfg.get("checkpoint_every")
-
-    def _save_checkpoint(step):
-        if not checkpoint_path:
-            return
-        Path(checkpoint_path).parent.mkdir(parents=True, exist_ok=True)
-        torch.save({"model_config": model_config, "state_dict": model.state_dict(), "step": step}, checkpoint_path)
-        print(f"  saved checkpoint to {checkpoint_path} (step {step})")
-
-    model.train()
-    steps, log_every = train_cfg["steps"], train_cfg["log_every"]
-    for step in range(steps):
-        halted_before = carry.halted.cpu().numpy()
-        batch = _next_candidate_batch()
-        current_row_idx = np.where(halted_before, candidate_idx, current_row_idx)
-
-        optimizer.zero_grad()
-        carry, loss, metrics, outputs, all_halted = model(carry, batch)
+        z, p = model(z, batch)
+        weights = objective_weights(objectives, step)
+        loss, terms = loss_fn(p, batch, weights)
+        opt.zero_grad()
         loss.backward()
-        optimizer.step()
+        grad_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), tc.get("grad_clip") or float("inf")).item()
+        opt.step()
+        if sched:
+            sched.step()
 
-        if step % log_every == 0 or step == steps - 1:
-            extra = f"  collision_loss={metrics['collision_loss'].item():.4f}  halted={bool(all_halted.item())}"
-            _log_metrics("train", f"step {step:4d}  ", loss, metrics, step, extra=extra)
-            wandb.log({"train/collision_loss": metrics["collision_loss"].item()}, step=step)
-            sol_metrics = solution_metrics(
-                outputs["period_prob"], outputs["room_prob"],
-                [instance_ctt_paths[i] for i in current_row_idx], problem_cache,
-            )
-            _log_solution_metrics("train", sol_metrics, step)
+        last = step == tc["steps"] - 1
+        if step % tc["log_every"] == 0 or last:
+            log("train", step, loss.item(), terms, solution_metrics(p, batch["room_mask"].shape[1], [ctt_paths[i] for i in idx]),
+                grad_norm=grad_norm, lr=opt.param_groups[0]["lr"], **{f"weight_{k}": v for k, v in weights.items()})
+        if evals and (step % tc["eval_every"] == 0 or last):
+            metrics = evaluate(step)
+            if tc.get("best_metric") and (m := sum(metrics[k] for k in tc["best_metric"])) < best:
+                best = m
+                save(step, "_best")
+                wandb.run.summary.update({"best/step": step, "best/metric": m})
+            if (k := tc.get("best_feasible")) and metrics[k] > best_feasible:
+                best_feasible = metrics[k]
+                save(step, "_feasible")
+                wandb.run.summary.update({"best_feasible/step": step, "best_feasible/value": metrics[k]})
+        if tc.get("checkpoint_every") and step and step % tc["checkpoint_every"] == 0:
+            save(step)
 
-        if eval_batches and eval_every and (step % eval_every == 0 or step == steps - 1):
-            _run_eval(model, eval_batches, eval_ctt_paths, problem_cache, step)
-
-        if checkpoint_every and (step % checkpoint_every == 0 or step == steps - 1) and step > 0:
-            _save_checkpoint(step)
-
-    _save_checkpoint(steps - 1)
+    save(tc["steps"] - 1)
     wandb.finish()
 
 

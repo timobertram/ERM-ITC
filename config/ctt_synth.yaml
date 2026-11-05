@@ -1,30 +1,36 @@
-# Trains on synthetic instances (dataset/ctt_generator.py output, encoded
-# into data/ITC2007/synth/), holds out ALL 21 real instances for eval.
 data:
+  lecture_tag: course
   paths:
-    - "data/ITC2007/synth/*_encoded.npz"
+    - "data/ITC2007/synth/*[0-8][0-9][0-9]_encoded.npz"
+    - "data/ITC2007/synth/*9[0-8][0-9]_encoded.npz"
+  eval:
+    synth_heldout: ["data/ITC2007/synth/*99[0-9]_encoded.npz"]
+    real: ["data/ITC2007/real/comp*_encoded.npz"]
 
 training:
-  project_name: ctt
-  run_name: null           # null -> wandb auto-generates one
+  project: ctt
+  run_name: null
   device: cuda
   seed: 0
-  batch_size: 64           # fixed slot count, unlike the real-data base config's whole-corpus default
+  batch_size: 64
   steps: 10000
   lr: 3.0e-4
-  collision_weight: 1.0
+  grad_clip: 1.0
+  objectives:
+    h1: {enabled: true, weight: 100.0, start: 0, ramp: 0}
+    h2: {enabled: true, weight: 100.0, start: 0, ramp: 0}
+    h3a: {enabled: true, weight: 100.0, start: 0, ramp: 0}
+    h3b: {enabled: true, weight: 100.0, start: 0, ramp: 0}
+    s1: {enabled: true, weight: 1.0, start: 0, ramp: 0}
+    s2: {enabled: true, weight: 5.0, start: 0, ramp: 0}
+    s3: {enabled: true, weight: 2.0, start: 0, ramp: 0}
+    s4: {enabled: true, weight: 1.0, start: 0, ramp: 0}
   log_every: 10
-  eval_every: 10
-  eval_paths: null         # single unnamed eval set
-  eval_sets:
-    real: ["data/ITC2007/real/comp*_encoded.npz"]
-  checkpoint_path: null    # e.g. outputs/checkpoints/ctt_synth.pt
-  checkpoint_every: null
+  eval_every: 100
+  checkpoint: outputs/checkpoints/ctt_synth.pt
+  checkpoint_every: 500
 
 model:
-  module: trm_ctt                    # models/recursive_reasoning/trm_ctt.py
-  class_name: TRMCTT
-  loss_head_class_name: TRMCTTLossHead
   hidden_size: 256
   expansion: 4.0
   num_heads: 4
@@ -32,7 +38,5 @@ model:
   l_layers: 2
   h_cycles: 2
   l_cycles: 2
-  halt_max_steps: 16
-  halt_exploration_prob: 0.1
-  halt_max_prob: -1
-  forward_dtype: float32
+  sup_steps: 16
+  logit_scale: 4.0

@@ -1,0 +1,46 @@
+data:
+  lecture_tag: none
+  paths:
+    - "data/ITC2007/synth_2/gen[0-3][0-9][0-9][0-9]_encoded.npz"
+    - "data/ITC2007/synth_2/gen4[0-8][0-9][0-9]_encoded.npz"
+    - "data/ITC2007/synth_2/mid[0-3][0-9][0-9][0-9]_encoded.npz"
+    - "data/ITC2007/synth_2/mid4[0-8][0-9][0-9]_encoded.npz"
+  eval:
+    heldout_small: ["data/ITC2007/synth_2/gen49[0-9][0-9]_encoded.npz"]
+    heldout_medium: ["data/ITC2007/synth_2/mid49[0-9][0-9]_encoded.npz"]
+    heldout_large: ["data/ITC2007/synth_2/lar49[0-9][0-9]_encoded.npz"]
+    real: ["data/ITC2007/real/comp*_encoded.npz"]
+
+training:
+  project: ctt
+  run_name: abl-synth2-smallmed
+  device: cuda
+  seed: 0
+  batch_size: 64
+  steps: 2000
+  lr: 1.0e-4
+  grad_clip: 1.0
+  objectives:
+    h1: {enabled: true, weight: 100.0, start: 0, ramp: 0}
+    h2: {enabled: true, weight: 100.0, start: 0, ramp: 0}
+    h3a: {enabled: false, weight: 100.0, start: 0, ramp: 0}
+    h3b: {enabled: false, weight: 100.0, start: 0, ramp: 0}
+    s1: {enabled: false, weight: 1.0, start: 0, ramp: 0}
+    s2: {enabled: false, weight: 5.0, start: 0, ramp: 0}
+    s3: {enabled: false, weight: 2.0, start: 0, ramp: 0}
+    s4: {enabled: false, weight: 1.0, start: 0, ramp: 0}
+  log_every: 10
+  eval_every: 100
+  checkpoint: outputs/checkpoints/abl_synth2_smallmed.pt
+  checkpoint_every: 500
+
+model:
+  hidden_size: 256
+  expansion: 4.0
+  num_heads: 4
+  head_dim: 64
+  l_layers: 2
+  h_cycles: 2
+  l_cycles: 2
+  sup_steps: 16
+  logit_scale: 4.0

@@ -1,12 +1,3 @@
-"""CP-SAT solver for ITC2007 Track 3 (Curriculum-Based Course Timetabling).
-
-  H1/H3a/H3b (distinct periods per course/curriculum/teacher): AddAllDifferent
-  over period_var. H2 (room occupancy): AddAllDifferent over
-  period_var*n_rooms + room_var. H4 (availability): excluded from each
-  lecture's period_var domain directly.
-
-Soft constraints S1-S4 follow the official spec's formulas/weights.
-"""
 import argparse
 import json
 from typing import Dict, List, Tuple
@@ -17,10 +8,11 @@ from dataset.ctt_parser import CTTProblem, parse_ctt
 
 ALPHA = dict(S1=1, S2=5, S3=2, S4=1)
 
-Lecture = Tuple[str, int]  # (course_id, lecture_index)
+Lecture = Tuple[str, int]
 
 
 def build_model(problem: CTTProblem):
+    """CP-SAT model with hard constraints and weighted soft objective."""
     model = cp_model.CpModel()
     n_periods = problem.n_periods
     n_days, periods_per_day = problem.n_days, problem.periods_per_day
@@ -45,22 +37,18 @@ def build_model(problem: CTTProblem):
         period_var[lec] = model.NewIntVarFromDomain(cp_model.Domain.FromValues(allowed), f"period_{cid}_{li}")
         room_var[lec] = model.NewIntVar(0, n_rooms - 1, f"room_{cid}_{li}")
 
-    # H1(b): lectures of the same course must land on distinct periods
     for cid, c in problem.courses.items():
         lecs = [(cid, li) for li in range(c.n_lectures)]
         if len(lecs) > 1:
             model.AddAllDifferent([period_var[l] for l in lecs])
 
-    # H2: room occupancy -- no two lectures (any course) share (period, room)
     model.AddAllDifferent([period_var[l] * n_rooms + room_var[l] for l in lectures])
 
-    # H3a: courses in the same curriculum must all land on distinct periods
     for q in problem.curricula.values():
         lecs = [(cid, li) for cid in q.course_ids for li in range(problem.courses[cid].n_lectures)]
         if len(lecs) > 1:
             model.AddAllDifferent([period_var[l] for l in lecs])
 
-    # H3b: courses taught by the same teacher must all land on distinct periods
     teacher_courses: Dict[str, List[str]] = {}
     for cid, c in problem.courses.items():
         teacher_courses.setdefault(c.teacher_id, []).append(cid)
@@ -71,7 +59,6 @@ def build_model(problem: CTTProblem):
 
     objective_terms = []
 
-    # S1: RoomCapacity -- 1 point per student over the chosen room's capacity
     for lec in lectures:
         cid, _ = lec
         n_students = problem.courses[cid].n_students
@@ -81,14 +68,12 @@ def build_model(problem: CTTProblem):
         model.Add(excess >= n_students - capacity)
         objective_terms.append(ALPHA["S1"] * excess)
 
-    # day_var, needed for both S2 and S3
     day_var: Dict[Lecture, cp_model.IntVar] = {}
     for lec in lectures:
         d = model.NewIntVar(0, n_days - 1, f"day_{lec[0]}_{lec[1]}")
         model.AddDivisionEquality(d, period_var[lec], periods_per_day)
         day_var[lec] = d
 
-    # S2: MinimumWorkingDays -- 5 points per day short of the course's minimum
     for cid, c in problem.courses.items():
         lecs = [(cid, li) for li in range(c.n_lectures)]
         day_used = []
@@ -108,7 +93,6 @@ def build_model(problem: CTTProblem):
         model.Add(shortfall >= c.min_working_days - days_count)
         objective_terms.append(ALPHA["S2"] * shortfall)
 
-    # S3: CurriculumCompactness -- 2 points per lecture with no same-curriculum neighbor that day
     for qid, q in problem.curricula.items():
         lecs = [(cid, li) for cid in q.course_ids for li in range(problem.courses[cid].n_lectures)]
         occ = {}
@@ -138,7 +122,6 @@ def build_model(problem: CTTProblem):
                 model.AddMinEquality(isolated, [occ[(d, s)]] + [n.Not() for n in neighbors])
                 objective_terms.append(ALPHA["S3"] * isolated)
 
-    # S4: RoomStability -- 1 point per distinct room beyond the first, per course
     for cid, c in problem.courses.items():
         lecs = [(cid, li) for li in range(c.n_lectures)]
         room_used = []
@@ -163,6 +146,7 @@ def build_model(problem: CTTProblem):
 
 
 def solve(problem: CTTProblem, time_limit: float = 60.0, workers: int = 8, log_progress: bool = False) -> dict:
+    """Solve with CP-SAT and return the assignment and stats."""
     model, lectures, period_var, room_var, room_ids = build_model(problem)
 
     solver = cp_model.CpSolver()
@@ -194,11 +178,7 @@ def solve(problem: CTTProblem, time_limit: float = 60.0, workers: int = 8, log_p
 
 
 def evaluate_assignment(problem: CTTProblem, period_of: Dict[Lecture, int], room_of: Dict[Lecture, str]) -> dict:
-    """Scores an arbitrary (period, room) assignment against the H1-H4/S1-S4
-    semantics build_model() encodes, without invoking the solver. period_of/
-    room_of use solve()'s raw encoding (period=day*periods_per_day+period_in_day,
-    room=room id). Hard violations count as group size minus distinct
-    periods/rooms used, not just broken/not-broken."""
+    """Exact H1-H4 violation counts and S1-S4 penalties of an assignment."""
     periods_per_day = problem.periods_per_day
     lectures: List[Lecture] = [(cid, li) for cid, c in problem.courses.items() for li in range(c.n_lectures)]
 
@@ -207,6 +187,7 @@ def evaluate_assignment(problem: CTTProblem, period_of: Dict[Lecture, int], room
         unavailable.setdefault(u.course_id, set()).add(u.day * periods_per_day + u.period)
 
     def _distinct_violations(groups: List[List[Lecture]]) -> int:
+        """Group size minus distinct periods used, summed over groups."""
         total = 0
         for lecs in groups:
             if len(lecs) <= 1:
@@ -268,40 +249,6 @@ def evaluate_assignment(problem: CTTProblem, period_of: Dict[Lecture, int], room
         h1=h1, h2=h2, h3a=h3a, h3b=h3b, h4=h4, hard_violations=hard_violations,
         s1=s1, s2=s2, s3=s3, s4=s4, soft_objective=soft_objective,
     )
-
-
-def solution_metrics(period_prob, room_prob, ctt_paths: List[str], problem_cache: dict) -> Dict[str, float]:
-    """Averages evaluate_assignment() over a mini-batch (argmax predictions).
-    ctt_paths[row] is the .ctt file that row belongs to; problem_cache
-    memoizes parsed problems across calls."""
-    from dataset.ctt_encode import CANONICAL_MAX_PERIODS_PER_DAY
-
-    pred_period = period_prob.argmax(dim=-1).detach().cpu().numpy()
-    pred_room = room_prob.argmax(dim=-1).detach().cpu().numpy()
-
-    keys = ("h1", "h2", "h3a", "h3b", "h4", "hard_violations", "s1", "s2", "s3", "s4", "soft_objective")
-    totals = {k: 0.0 for k in keys}
-
-    for row, ctt_path in enumerate(ctt_paths):
-        if ctt_path not in problem_cache:
-            problem = parse_ctt(ctt_path)
-            lectures = [(cid, li) for cid, c in problem.courses.items() for li in range(c.n_lectures)]
-            room_ids = list(problem.rooms.keys())
-            problem_cache[ctt_path] = (problem, lectures, room_ids)
-        problem, lectures, room_ids = problem_cache[ctt_path]
-
-        period_of, room_of = {}, {}
-        for i, lec in enumerate(lectures):
-            day, slot = divmod(int(pred_period[row, i]), CANONICAL_MAX_PERIODS_PER_DAY)
-            period_of[lec] = day * problem.periods_per_day + slot
-            room_of[lec] = room_ids[int(pred_room[row, i])]
-
-        result = evaluate_assignment(problem, period_of, room_of)
-        for k in keys:
-            totals[k] += result[k]
-
-    n = len(ctt_paths)
-    return {k: v / n for k, v in totals.items()} if n else totals
 
 
 if __name__ == "__main__":

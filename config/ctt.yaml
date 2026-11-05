@@ -1,33 +1,36 @@
-# Base config: trains on the 20 real ITC2007 instances comp01-comp20,
-# holds out comp21 for eval. Copy this file per experiment rather than
-# editing it in place.
 data:
+  lecture_tag: course
   paths:
-    - "data/ITC2007/real/comp0[1-9]_encoded.npz"   # comp01-comp09
-    - "data/ITC2007/real/comp1[0-9]_encoded.npz"   # comp10-comp19
+    - "data/ITC2007/real/comp0[1-9]_encoded.npz"
+    - "data/ITC2007/real/comp1[0-9]_encoded.npz"
     - "data/ITC2007/real/comp20_encoded.npz"
+  eval:
+    comp21: ["data/ITC2007/real/comp21_encoded.npz"]
 
 training:
-  project_name: ctt
-  run_name: null           # null -> wandb auto-generates one
+  project: ctt
+  run_name: null
   device: cuda
   seed: 0
-  batch_size: null         # null -> whole corpus (20 persistent ACT slots here)
+  batch_size: null
   steps: 200
   lr: 1.0e-3
-  collision_weight: 1.0
+  grad_clip: 1.0
+  objectives:
+    h1: {enabled: true, weight: 100.0, start: 0, ramp: 0}
+    h2: {enabled: true, weight: 100.0, start: 0, ramp: 0}
+    h3a: {enabled: true, weight: 100.0, start: 0, ramp: 0}
+    h3b: {enabled: true, weight: 100.0, start: 0, ramp: 0}
+    s1: {enabled: true, weight: 1.0, start: 0, ramp: 0}
+    s2: {enabled: true, weight: 5.0, start: 0, ramp: 0}
+    s3: {enabled: true, weight: 2.0, start: 0, ramp: 0}
+    s4: {enabled: true, weight: 1.0, start: 0, ramp: 0}
   log_every: 10
   eval_every: 10
-  eval_paths: null         # single unnamed eval set
-  eval_sets:
-    comp21: ["data/ITC2007/real/comp21_encoded.npz"]
-  checkpoint_path: null    # e.g. outputs/checkpoints/ctt.pt
+  checkpoint: null
   checkpoint_every: null
 
 model:
-  module: trm_ctt                    # models/recursive_reasoning/trm_ctt.py
-  class_name: TRMCTT
-  loss_head_class_name: TRMCTTLossHead
   hidden_size: 256
   expansion: 4.0
   num_heads: 4
@@ -35,7 +38,5 @@ model:
   l_layers: 2
   h_cycles: 2
   l_cycles: 2
-  halt_max_steps: 16
-  halt_exploration_prob: 0.1
-  halt_max_prob: -1
-  forward_dtype: float32
+  sup_steps: 16
+  logit_scale: 4.0
