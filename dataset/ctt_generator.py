@@ -172,14 +172,18 @@ def write_ctt(problem: CTTProblem, path: str) -> None:
 
 def _generate_and_solve_one(task):
     """Generate one instance and solve it with CP-SAT; None if rejected."""
-    seed, name, size, time_limit, solver_workers = task
+    seed, name, size, time_limit, solver_workers, solver_name = task
     rng = np.random.default_rng(seed)
     try:
         problem = generate_problem(rng, name, size)
     except RuntimeError:
         return None
-    from dataset.ctt_solver import solve
-    result = solve(problem, time_limit=time_limit, workers=solver_workers, log_progress=False)
+    if solver_name == "milp":
+        from dataset.ctt_solver_milp import solve_pool  # gurobipy -- needs a license, see ctt_solver_milp.py
+        result = solve_pool(problem, time_limit=time_limit, workers=solver_workers, log_progress=False, pool_solutions=1000)
+    else:
+        from dataset.ctt_solver import solve  # ortools CP-SAT
+        result = solve(problem, time_limit=time_limit, workers=solver_workers, log_progress=False)
     if result["status"] not in ("OPTIMAL", "FEASIBLE"):
         return None
     return problem, result
@@ -200,10 +204,11 @@ if __name__ == "__main__":
     cli.add_argument("--size", choices=list(SIZES), default="small")
     cli.add_argument("--seed", type=int, default=0)
     cli.add_argument("--out-dir", default="data/ITC2007/synth")
-    cli.add_argument("--time-limit", type=float, default=20.0)
+    cli.add_argument("--time-limit", type=float, default=120.0)
     cli.add_argument("--prefix", default="gen")
     cli.add_argument("--jobs", type=int, default=1)
     cli.add_argument("--solver-workers", type=int, default=8)
+    cli.add_argument("--solver", choices=["cpsat", "milp"], default="cpsat")
     args = cli.parse_args()
 
     os.makedirs(args.out_dir, exist_ok=True)
@@ -227,7 +232,8 @@ if __name__ == "__main__":
         def _submit_next():
             """Queue the next instance."""
             name = f"{args.prefix}{(n_written + len(in_flight)):0{name_width}d}"
-            fut = pool.submit(_generate_and_solve_one, (seed_box[0], name, size, args.time_limit, args.solver_workers))
+            fut = pool.submit(_generate_and_solve_one,
+                              (seed_box[0], name, size, args.time_limit, args.solver_workers, args.solver))
             in_flight[fut] = name
             seed_box[0] += 1
 
